@@ -1,0 +1,2646 @@
+dataset_source,llm,code,label
+self_constructed,Human,"def merge_sort(collection):
+    def merge(left, right):
+        left_index, right_index = 0, 0
+        left_len, right_len = len(left), len(right)
+        merged = []
+        while left_index < left_len and right_index < right_len:
+            if left[left_index] <= right[right_index]:
+                merged.append(left[left_index])
+                left_index += 1
+            else:
+                merged.append(right[right_index])
+                right_index += 1
+        if left_index == left_len:
+            merged.extend(right[right_index:])
+        else:
+            merged.extend(left[left_index:])
+        return merged
+    if len(collection) <= 1:
+        return collection
+    mid = len(collection) // 2
+    return merge(merge_sort(collection[:mid]), merge_sort(collection[mid:]))",0
+self_constructed,Human,"def partition(items, begin, end):
+    pivot = items[begin]
+    i = begin + 1
+    for j in range(begin + 1, end):
+        if items[j] < pivot:
+            items[i], items[j] = items[j], items[i]
+            i += 1
+    items[begin], items[i - 1] = items[i - 1], items[begin]
+    return i - 1
+def quick_sort(items, begin=0, end=None):
+    if end is None: end = len(items)
+    if begin >= end: return items
+    p = partition(items, begin, end)
+    quick_sort(items, begin, p)
+    quick_sort(items, p + 1, end)
+    return items",0
+self_constructed,Human,"from collections import deque
+def breadth_first_search(graph, start, goal=None):
+    visited = set()
+    queue = deque([[start]])
+    while queue:
+        path = queue.popleft()
+        vertex = path[-1]
+        if vertex not in visited:
+            if goal is not None and vertex == goal: return path
+            visited.add(vertex)
+            for current_neighbour in graph.get(vertex, []):
+                new_path = path + [current_neighbour]
+                queue.append(new_path)
+    return None",0
+self_constructed,Human,"class Node:
+    def __init__(self, data):
+        self.data, self.left, self.right = data, None, None
+class BinarySearchTree:
+    def __init__(self): self.root = None
+    def insert(self, data):
+        if not self.root: self.root = Node(data)
+        else: self._insert_recursive(self.root, data)
+    def _insert_recursive(self, node, data):
+        if data < node.data:
+            if node.left: self._insert_recursive(node.left, data)
+            else: node.left = Node(data)
+        else:
+            if node.right: self._insert_recursive(node.right, data)
+            else: node.right = Node(data)",0
+self_constructed,Human,"import heapq
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    pq = [(0, start)]
+    while pq:
+        curr_dist, curr_node = heapq.heappop(pq)
+        if curr_dist > distances[curr_node]: continue
+        for neighbor, weight in graph[curr_node].items():
+            distance = curr_dist + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+    return distances",0
+self_constructed,Human,"def heapify(unsorted, index, heap_size):
+    largest = index
+    left_index = 2 * index + 1
+    right_index = 2 * index + 2
+    if left_index < heap_size and unsorted[left_index] > unsorted[largest]:
+        largest = left_index
+    if right_index < heap_size and unsorted[right_index] > unsorted[largest]:
+        largest = right_index
+    if largest != index:
+        unsorted[largest], unsorted[index] = unsorted[index], unsorted[largest]
+        heapify(unsorted, largest, heap_size)
+def heap_sort(unsorted):
+    n = len(unsorted)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(unsorted, i, n)
+    for i in range(n - 1, 0, -1):
+        unsorted[0], unsorted[i] = unsorted[i], unsorted[0]
+        heapify(unsorted, 0, i)
+    return unsorted",0
+self_constructed,Human,"def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr",0
+self_constructed,Human,"def selection_sort(collection):
+    length = len(collection)
+    for i in range(length - 1):
+        least = i
+        for k in range(i + 1, length):
+            if collection[k] < collection[least]:
+                least = k
+        collection[least], collection[i] = collection[i], collection[least]
+    return collection",0
+self_constructed,Human,"def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and key < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+    return arr",0
+self_constructed,Human,"def depth_first_search(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    for next in graph[start] - visited:
+        depth_first_search(graph, next, visited)
+    return visited",0
+self_constructed,Human,"def topological_sort(graph):
+    visited = set()
+    stack = []
+    def dfs(u):
+        visited.add(u)
+        if u in graph:
+            for v in graph[u]:
+                if v not in visited: dfs(v)
+        stack.insert(0, u)
+    for u in graph:
+        if u not in visited: dfs(u)
+    return stack",0
+self_constructed,Human,"parent = dict()
+rank = dict()
+def make_set(vertice):
+    parent[vertice] = vertice
+    rank[vertice] = 0
+def find(vertice):
+    if parent[vertice] != vertice:
+        parent[vertice] = find(parent[vertice])
+    return parent[vertice]
+def union(v1, v2):
+    root1 = find(v1)
+    root2 = find(v2)
+    if root1 != root2:
+        if rank[root1] > rank[root2]: parent[root2] = root1
+        else:
+            parent[root1] = root2
+            if rank[root1] == rank[root2]: rank[root2] += 1",0
+self_constructed,Human,"import heapq
+def prim(graph, start):
+    mst = []
+    visited = set([start])
+    edges = [(cost, start, to) for to, cost in graph[start].items()]
+    heapq.heapify(edges)
+    while edges:
+        cost, frm, to = heapq.heappop(edges)
+        if to not in visited:
+            visited.add(to)
+            mst.append((frm, to, cost))
+            for to_next, cost2 in graph[to].items():
+                if to_next not in visited: heapq.heappush(edges, (cost2, to, to_next))
+    return mst",0
+self_constructed,Human,"def count_components(n, edges):
+    parent = list(range(n))
+    def find(i):
+        if parent[i] == i: return i
+        parent[i] = find(parent[i])
+        return parent[i]
+    for i, j in edges:
+        root_i, root_j = find(i), find(j)
+        if root_i != root_j:
+            parent[root_i] = root_j
+            n -= 1
+    return n",0
+self_constructed,Human,"class Node:
+    def __init__(self, data):
+        self.data, self.left, self.right, self.height = data, None, None, 1
+class AVLTree:
+    def get_height(self, node): return node.height if node else 0
+    def get_balance(self, node): return self.get_height(node.left) - self.get_height(node.right) if node else 0
+    def rotate_right(self, y):
+        x = y.left; T2 = x.right
+        x.right = y; y.left = T2
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        x.height = 1 + max(self.get_height(x.left), self.get_height(x.right))
+        return x",0
+self_constructed,Human,"class BinaryHeap:
+    def __init__(self): self.heap_list = [0]; self.current_size = 0
+    def perc_up(self, i):
+        while i // 2 > 0:
+            if self.heap_list[i] < self.heap_list[i // 2]:
+                self.heap_list[i // 2], self.heap_list[i] = self.heap_list[i], self.heap_list[i // 2]
+            i = i // 2
+    def insert(self, k):
+        self.heap_list.append(k); self.current_size += 1; self.perc_up(self.current_size)",0
+self_constructed,Human,"class TrieNode:
+    def __init__(self): self.nodes = {}; self.is_leaf = False
+class Trie:
+    def __init__(self): self.root = TrieNode()
+    def insert(self, word):
+        curr = self.root
+        for char in word:
+            if char not in curr.nodes: curr.nodes[char] = TrieNode()
+            curr = curr.nodes[char]
+        curr.is_leaf = True
+    def search(self, word):
+        curr = self.root
+        for char in word:
+            if char not in curr.nodes: return False
+            curr = curr.nodes[char]
+        return curr.is_leaf",0
+self_constructed,Human,"class SegmentTree:
+    def __init__(self, arr):
+        self.n = len(arr); self.tree = [0] * (2 * self.n)
+        for i in range(self.n): self.tree[self.n + i] = arr[i]
+        for i in range(self.n - 1, 0, -1): self.tree[i] = self.tree[2 * i] + self.tree[2 * i + 1]
+    def update(self, i, val):
+        i += self.n; self.tree[i] = val
+        while i > 1:
+            self.tree[i // 2] = self.tree[i] + self.tree[i ^ 1]
+            i //= 2",0
+self_constructed,Human,"class UnionFind:
+    def __init__(self, n): self.ids = list(range(n)); self.cnt = n
+    def find(self, p):
+        while p != self.ids[p]:
+            self.ids[p] = self.ids[self.ids[p]]; p = self.ids[p]
+        return p
+    def union(self, p, q):
+        i, j = self.find(p), self.find(q)
+        if i == j: return
+        self.ids[i] = j; self.cnt -= 1",0
+self_constructed,Human,"class HashTable:
+    def __init__(self, size=10):
+        self.size = size; self.slots = [None] * self.size; self.data = [None] * self.size
+    def put(self, key, data):
+        hash_val = self.hash_function(key, self.size)
+        if self.slots[hash_val] == None:
+            self.slots[hash_val] = key; self.data[hash_val] = data
+        else:
+            if self.slots[hash_val] == key: self.data[hash_val] = data
+            else: # rehash logic skipped for brevity
+                pass",0
+self_constructed,Human,"def bellman_ford(graph, start):
+    dist = {node: float('inf') for node in graph}
+    dist[start] = 0
+    for _ in range(len(graph) - 1):
+        for u in graph:
+            for v, weight in graph[u].items():
+                if dist[u] + weight < dist[v]:
+                    dist[v] = dist[u] + weight
+    return dist",0
+self_constructed,Human,"def floyd_warshall(graph):
+    dist = graph
+    nodes = range(len(graph))
+    for k in nodes:
+        for i in nodes:
+            for j in nodes:
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+    return dist",0
+self_constructed,Human,"def binary_search(arr, target):
+    low, high = 0, len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target: return mid
+        elif arr[mid] < target: low = mid + 1
+        else: high = mid - 1
+    return -1",0
+self_constructed,Human,"def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1",0
+self_constructed,Human,"def fibonacci(n):
+    if n <= 0: return []
+    if n == 1: return [0]
+    sequence = [0, 1]
+    while len(sequence) < n:
+        next_value = sequence[-1] + sequence[-2]
+        sequence.append(next_value)
+    return sequence",0
+self_constructed,Human,"def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return abs(a)",0
+self_constructed,Human,"def sieve(n):
+    primes = [True for i in range(n+1)]
+    p = 2
+    while (p * p <= n):
+        if (primes[p] == True):
+            for i in range(p * p, n+1, p):
+                primes[i] = False
+        p += 1
+    return [p for p in range(2, n+1) if primes[p]]",0
+self_constructed,Human,"def max_subarray(numbers):
+    best_sum = float('-inf')
+    current_sum = 0
+    for x in numbers:
+        current_sum = max(x, current_sum + x)
+        best_sum = max(best_sum, current_sum)
+    return best_sum",0
+self_constructed,Human,"def counting_sort(collection):
+    if not collection: return []
+    max_val = max(collection)
+    min_val = min(collection)
+    count = [0] * (max_val - min_val + 1)
+    for num in collection:
+        count[num - min_val] += 1
+    result = []
+    for i, c in enumerate(count):
+        result.extend([i + min_val] * c)
+    return result",0
+self_constructed,Human,"def radix_sort(lst):
+    RADIX = 10
+    placement = 1
+    max_digit = max(lst)
+    while placement < max_digit:
+        buckets = [list() for _ in range(RADIX)]
+        for i in lst:
+            tmp = int((i / placement) % RADIX)
+            buckets[tmp].append(i)
+        a = 0
+        for b in range(RADIX):
+            buck = buckets[b]
+            for i in buck:
+                lst[a] = i
+                a += 1
+        placement *= RADIX
+    return lst",0
+self_constructed,Human,"def factorial(n):
+    if n < 0:
+        raise ValueError(""Factorial is not defined for negative numbers"")
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)",0
+self_constructed,Human,"def binary_exponentiation(base, power):
+    result = 1
+    while power > 0:
+        if power % 2 == 1:
+            result *= base
+        base *= base
+        power //= 2
+    return result",0
+self_constructed,Human,"def is_palindrome(s):
+    s = s.replace("" "", """").lower()
+    left, right = 0, len(s) - 1
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    return True",0
+self_constructed,Human,"def transpose(matrix):
+    rows = len(matrix)
+    cols = len(matrix[0])
+    transposed = [[0 for _ in range(rows)] for _ in range(cols)]
+    for i in range(rows):
+        for j in range(cols):
+            transposed[j][i] = matrix[i][j]
+    return transposed",0
+self_constructed,Human,"def kmp_search(pattern, text):
+    m, n = len(pattern), len(text)
+    lps = [0] * m
+    j, i = 0, 1
+    while i < m:
+        if pattern[i] == pattern[j]:
+            j += 1
+            lps[i] = j
+            i += 1
+        elif j != 0: j = lps[j-1]
+        else: lps[i] = 0; i += 1
+    res = []; i, j = 0, 0
+    while i < n:
+        if pattern[j] == text[i]: i += 1; j += 1
+        if j == m: res.append(i-j); j = lps[j-1]
+        elif i < n and pattern[j] != text[i]:
+            if j != 0: j = lps[j-1]
+            else: i += 1
+    return res",0
+self_constructed,Human,"def rabin_karp(pattern, text, q=101):
+    d = 256
+    m, n = len(pattern), len(text)
+    p, t, h = 0, 0, 1
+    for i in range(m-1): h = (h*d) % q
+    for i in range(m):
+        p = (d*p + ord(pattern[i])) % q
+        t = (d*t + ord(text[i])) % q
+    for i in range(n-m+1):
+        if p == t:
+            for j in range(m):
+                if text[i+j] != pattern[j]: break
+            else: return i
+        if i < n-m:
+            t = (d*(t - ord(text[i])*h) + ord(text[i+m])) % q
+            if t < 0: t = t + q
+    return -1",0
+self_constructed,Human,"def levenshtein_distance(s1, s2):
+    if len(s1) < len(s2):
+        return levenshtein_distance(s2, s1)
+    if len(s2) == 0:
+        return len(s1)
+    previous_row = range(len(s2) + 1)
+    for i, c1 in enumerate(s1):
+        current_row = [i + 1]
+        for j, c2 in enumerate(s2):
+            insertions = previous_row[j + 1] + 1
+            deletions = current_row[j] + 1
+            substitutions = previous_row[j] + (c1 != c2)
+            current_row.append(min(insertions, deletions, substitutions))
+        previous_row = current_row
+    return previous_row[-1]",0
+self_constructed,Human,"def knapsack(capacity, weights, values, n):
+    dp = [[0 for _ in range(capacity + 1)] for _ in range(n + 1)]
+    for i in range(n + 1):
+        for w in range(capacity + 1):
+            if i == 0 or w == 0:
+                dp[i][w] = 0
+            elif weights[i-1] <= w:
+                dp[i][w] = max(values[i-1] + dp[i-1][w-weights[i-1]], dp[i-1][w])
+            else:
+                dp[i][w] = dp[i-1][w]
+    return dp[n][capacity]",0
+self_constructed,Human,"def lcs(X, Y):
+    m, n = len(X), len(Y)
+    L = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if X[i-1] == Y[j-1]:
+                L[i][j] = L[i-1][j-1] + 1
+            else:
+                L[i][j] = max(L[i-1][j], L[i][j-1])
+    return L[m][n]",0
+self_constructed,Human,"def lis(arr):
+    n = len(arr)
+    lis_arr = [1] * n
+    for i in range(1, n):
+        for j in range(0, i):
+            if arr[i] > arr[j] and lis_arr[i] < lis_arr[j] + 1:
+                lis_arr[i] = lis_arr[j] + 1
+    maximum = 0
+    for i in range(n):
+        maximum = max(maximum, lis_arr[i])
+    return maximum",0
+self_constructed,Human,"def is_bipartite(graph):
+    color = {}
+    for node in graph:
+        if node not in color:
+            queue = [node]
+            color[node] = 0
+            while queue:
+                curr = queue.pop(0)
+                for neighbor in graph[curr]:
+                    if neighbor not in color:
+                        color[neighbor] = 1 - color[curr]
+                        queue.append(neighbor)
+                    elif color[neighbor] == color[curr]:
+                        return False
+    return True",0
+self_constructed,Human,"def eulerian_path(graph):
+    in_degree = {u: 0 for u in graph}
+    out_degree = {u: len(v) for u, v in graph.items()}
+    for u in graph:
+        for v in graph[u]:
+            in_degree[v] = in_degree.get(v, 0) + 1
+    start_node = next(iter(graph))
+    for u in graph:
+        if out_degree[u] - in_degree[u] == 1:
+            start_node = u
+            break
+    path = []
+    def dfs(u):
+        while graph[u]:
+            v = graph[u].pop()
+            dfs(v)
+        path.append(u)
+    dfs(start_node)
+    return path[::-1]",0
+self_constructed,Human,"def two_sum(nums, target):
+    dic = {}
+    for i, num in enumerate(nums):
+        if num in dic:
+            return [dic[num], i]
+        else:
+            dic[target - num] = i
+    return None",0
+self_constructed,Human,"def solve_n_queens(n):
+    def is_safe(board, row, col):
+        for i in range(row):
+            if board[i] == col or                board[i] - i == col - row or                board[i] + i == col + row:
+                return False
+        return True
+    def solve(board, row):
+        if row == n:
+            result.append(board[:])
+            return
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row] = col
+                solve(board, row + 1)
+                board[row] = -1
+    result = []
+    solve([-1] * n, 0)
+    return result",0
+self_constructed,Human,"def is_safe(graph, color, v, c):
+    for i in range(len(graph)):
+        if graph[v][i] == 1 and color[i] == c:
+            return False
+    return True
+def graph_coloring(graph, m, color, v):
+    if v == len(graph): return True
+    for c in range(1, m + 1):
+        if is_safe(graph, color, v, c):
+            color[v] = c
+            if graph_coloring(graph, m, color, v + 1):
+                return True
+            color[v] = 0
+    return False",0
+self_constructed,Human,"from collections import OrderedDict
+class LRUCache:
+    def __init__(self, capacity):
+        self.cache = OrderedDict()
+        self.capacity = capacity
+    def get(self, key):
+        if key not in self.cache: return -1
+        self.cache.move_to_end(key)
+        return self.cache[key]
+    def put(self, key, value):
+        self.cache[key] = value
+        self.cache.move_to_end(key)
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)",0
+self_constructed,Human,"def is_valid_sudoku(board):
+    seen = set()
+    for i in range(9):
+        for j in range(9):
+            num = board[i][j]
+            if num != '.':
+                row_str = f""{num} in row {i}""
+                col_str = f""{num} in col {j}""
+                box_str = f""{num} in box {i//3}-{j//3}""
+                if row_str in seen or col_str in seen or box_str in seen:
+                    return False
+                seen.add(row_str)
+                seen.add(col_str)
+                seen.add(box_str)
+    return True",0
+self_constructed,Human,"def prefix_sum(arr):
+    n = len(arr)
+    prefix = [0] * n
+    prefix[0] = arr[0]
+    for i in range(1, n):
+        prefix[i] = prefix[i-1] + arr[i]
+    return prefix",0
+self_constructed,Human,"from collections import deque
+def max_sliding_window(nums, k):
+    q = deque()
+    res = []
+    for i, cur in enumerate(nums):
+        while q and nums[q[-1]] <= cur:
+            q.pop()
+        q.append(i)
+        if q[0] == i - k:
+            q.popleft()
+        if i >= k - 1:
+            res.append(nums[q[0]])
+    return res",0
+self_constructed,Human,"class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+def reverse_linked_list(head):
+    prev = None
+    curr = head
+    while curr:
+        next_temp = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next_temp
+    return prev",0
+self_constructed,GPT-4o,"def binary_search(arr: list, target: int) -> int:
+    """"""
+    Perform binary search on a sorted array.
+    Returns the index of the target if found, otherwise -1.
+    """"""
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2  # Calculate the middle index
+
+        if arr[mid] == target:
+            return mid  # Target found
+        elif arr[mid] < target:
+            left = mid + 1  # Search in the right half
+        else:
+            right = mid - 1  # Search in the left half
+
+    return -1  # Target not found
+
+# Example usage
+if __name__ == ""__main__"":
+    sorted_array = [1, 3, 5, 7, 9, 11, 13, 15]
+    target = 7
+    result = binary_search(sorted_array, target)
+    print(f""Index of {target}: {result}"")  # Output: Index of 7: 3",1
+self_constructed,GPT-4o,"def linear_search(arr: list, target) -> int:
+    """"""
+    Perform linear search on a list.
+    Returns the index of the target if found, otherwise -1.
+    """"""
+    for index, element in enumerate(arr):
+        if element == target:
+            return index  # Target found at this index
+    return -1  # Target not found
+
+# Example usage
+if __name__ == ""__main__"":
+    my_list = [4, 2, 7, 1, 9, 3]
+    target = 9
+    result = linear_search(my_list, target)
+    print(f""Index of {target}: {result}"")  # Output: Index of 9: 4",1
+self_constructed,GPT-4o,"import math
+
+def jump_search(arr: list, target: int) -> int:
+    """"""
+    Perform jump search on a sorted array.
+    Returns the index of the target if found, otherwise -1.
+    """"""
+    n = len(arr)
+    step = int(math.sqrt(n))  # Optimal block size to jump
+    prev = 0
+
+    # Jump through blocks to find the block where target may be present
+    while arr[min(step, n) - 1] < target:
+        prev = step
+        step += int(math.sqrt(n))
+        if prev >= n:
+            return -1
+
+    # Linear search within the identified block
+    while arr[prev] < target:
+        prev += 1
+        if prev == min(step, n):
+            return -1
+
+    if arr[prev] == target:
+        return prev
+    return -1
+
+# Example usage
+if __name__ == ""__main__"":
+    sorted_array = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+    target = 55
+    result = jump_search(sorted_array, target)
+    print(f""Index of {target}: {result}"")  # Output: Index of 55: 10",1
+self_constructed,GPT-4o,"def fibonacci(n: int) -> list:
+    """"""
+    Generate Fibonacci sequence up to n terms.
+    Returns a list containing the first n Fibonacci numbers.
+    """"""
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+
+    fib_sequence = [0, 1]
+    for i in range(2, n):
+        # Each term is the sum of the two preceding terms
+        next_term = fib_sequence[i - 1] + fib_sequence[i - 2]
+        fib_sequence.append(next_term)
+
+    return fib_sequence
+
+# Example usage
+if __name__ == ""__main__"":
+    terms = 10
+    result = fibonacci(terms)
+    print(f""First {terms} Fibonacci numbers: {result}"")",1
+self_constructed,GPT-4o,"def factorial(n: int) -> int:
+    """"""
+    Calculate the factorial of a non-negative integer n.
+    Uses an iterative approach for efficiency.
+    """"""
+    if n < 0:
+        raise ValueError(""Factorial is not defined for negative numbers."")
+
+    result = 1
+    for i in range(2, n + 1):
+        result *= i  # Multiply result by each integer up to n
+
+    return result
+
+# Example usage
+if __name__ == ""__main__"":
+    number = 6
+    print(f""{number}! = {factorial(number)}"")  # Output: 6! = 720",1
+self_constructed,GPT-4o,"def is_prime(n: int) -> bool:
+    """"""
+    Check if a number is prime.
+    A prime number is greater than 1 and has no divisors other than 1 and itself.
+    """"""
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+
+    # Check for divisors up to the square root of n
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+
+    return True
+
+# Example usage
+if __name__ == ""__main__"":
+    for num in range(1, 20):
+        if is_prime(num):
+            print(f""{num} is prime"")",1
+self_constructed,GPT-4o,"def gcd(a: int, b: int) -> int:
+    """"""
+    Calculate the Greatest Common Divisor (GCD) of two integers
+    using the Euclidean algorithm.
+    """"""
+    while b != 0:
+        a, b = b, a % b  # Replace a with b and b with a mod b
+    return abs(a)
+
+# Example usage
+if __name__ == ""__main__"":
+    num1, num2 = 48, 18
+    print(f""GCD of {num1} and {num2}: {gcd(num1, num2)}"")  # Output: 6",1
+self_constructed,GPT-4o,"def gcd(a: int, b: int) -> int:
+    """"""Calculate the Greatest Common Divisor using the Euclidean algorithm.""""""
+    while b:
+        a, b = b, a % b
+    return abs(a)
+
+def lcm(a: int, b: int) -> int:
+    """"""
+    Calculate the Least Common Multiple (LCM) of two integers.
+    Uses the relationship: LCM(a, b) = |a * b| / GCD(a, b)
+    """"""
+    if a == 0 or b == 0:
+        return 0
+    return abs(a * b) // gcd(a, b)
+
+# Example usage
+if __name__ == ""__main__"":
+    num1, num2 = 12, 18
+    print(f""LCM of {num1} and {num2}: {lcm(num1, num2)}"")  # Output: 36",1
+self_constructed,GPT-4o,"def is_palindrome(s: str) -> bool:
+    """"""
+    Check if a string is a palindrome.
+    Ignores spaces and is case-insensitive.
+    """"""
+    # Remove spaces and convert to lowercase
+    cleaned = s.replace(' ', '').lower()
+
+    # Compare the string with its reverse
+    return cleaned == cleaned[::-1]
+
+# Example usage
+if __name__ == ""__main__"":
+    test_cases = [""racecar"", ""hello"", ""A man a plan a canal Panama"", ""level""]
+    for word in test_cases:
+        result = is_palindrome(word)
+        print(f""'{word}' is {'a' if result else 'not a'} palindrome"")",1
+self_constructed,GPT-4o,"def are_anagrams(str1: str, str2: str) -> bool:
+    """"""
+    Check if two strings are anagrams of each other.
+    Two strings are anagrams if they contain the same characters
+    with the same frequencies, ignoring spaces and case.
+    """"""
+    # Normalize: remove spaces and convert to lowercase
+    normalized1 = str1.replace(' ', '').lower()
+    normalized2 = str2.replace(' ', '').lower()
+
+    # Anagrams must have the same length
+    if len(normalized1) != len(normalized2):
+        return False
+
+    # Compare sorted characters
+    return sorted(normalized1) == sorted(normalized2)
+
+# Example usage
+if __name__ == ""__main__"":
+    pairs = [(""listen"", ""silent""), (""hello"", ""world""), (""Triangle"", ""Integral"")]
+    for s1, s2 in pairs:
+        print(f""'{s1}' and '{s2}': {are_anagrams(s1, s2)}"")",1
+self_constructed,GPT-4o,"def count_vowels(text: str) -> int:
+    """"""
+    Count the number of vowels in a given string.
+    Vowels are: a, e, i, o, u (both uppercase and lowercase).
+    """"""
+    vowels = set('aeiouAEIOU')  # Define the set of vowels
+    count = sum(1 for char in text if char in vowels)
+    return count
+
+# Example usage
+if __name__ == ""__main__"":
+    test_string = ""Hello, World! This is a Python program.""
+    result = count_vowels(test_string)
+    print(f""Number of vowels in '{test_string}': {result}"")",1
+self_constructed,GPT-4o,"def reverse_string(s: str) -> str:
+    """"""
+    Reverse a given string.
+    Uses Python's slice notation for an efficient reversal.
+    """"""
+    return s[::-1]
+
+def reverse_string_manual(s: str) -> str:
+    """"""
+    Reverse a string using a manual approach with a loop.
+    """"""
+    reversed_chars = []
+    for char in s:
+        reversed_chars.insert(0, char)  # Insert at beginning
+    return ''.join(reversed_chars)
+
+# Example usage
+if __name__ == ""__main__"":
+    original = ""Hello, Python!""
+    print(f""Original: {original}"")
+    print(f""Reversed (slice): {reverse_string(original)}"")
+    print(f""Reversed (manual): {reverse_string_manual(original)}"")",1
+self_constructed,GPT-4o,"def caesar_cipher(text: str, shift: int) -> str:
+    """"""
+    Encrypt text using Caesar Cipher.
+    Shifts each alphabetical character by the given number of positions.
+    Non-alphabetical characters remain unchanged.
+    """"""
+    result = []
+
+    for char in text:
+        if char.isalpha():
+            # Determine the base ASCII value (uppercase or lowercase)
+            base = ord('A') if char.isupper() else ord('a')
+            # Shift the character and wrap around using modulo 26
+            shifted_char = chr((ord(char) - base + shift) % 26 + base)
+            result.append(shifted_char)
+        else:
+            result.append(char)  # Keep non-alphabetical characters as-is
+
+    return ''.join(result)
+
+def caesar_decipher(text: str, shift: int) -> str:
+    """"""Decrypt text encrypted with Caesar Cipher.""""""
+    return caesar_cipher(text, -shift)
+
+# Example usage
+if __name__ == ""__main__"":
+    message = ""Hello, World!""
+    shift = 3
+    encrypted = caesar_cipher(message, shift)
+    decrypted = caesar_decipher(encrypted, shift)
+    print(f""Original:  {message}"")
+    print(f""Encrypted: {encrypted}"")
+    print(f""Decrypted: {decrypted}"")",1
+self_constructed,GPT-4o,"from collections import defaultdict
+
+def frequency_counter(data: list) -> dict:
+    """"""
+    Count the frequency of each element in the given list.
+    Returns a dictionary mapping each element to its count.
+    """"""
+    freq = defaultdict(int)
+
+    for item in data:
+        freq[item] += 1  # Increment the count for each element
+
+    return dict(freq)
+
+# Example usage
+if __name__ == ""__main__"":
+    items = ['apple', 'banana', 'apple', 'cherry', 'banana', 'apple']
+    result = frequency_counter(items)
+    print(""Frequency of each element:"")
+    for element, count in sorted(result.items()):
+        print(f""  {element}: {count}"")",1
+self_constructed,GPT-4o,"def two_sum(nums: list, target: int) -> list:
+    """"""
+    Find two numbers in the list that add up to the target.
+    Returns the indices of the two numbers.
+    Uses a hash map for O(n) time complexity.
+    """"""
+    seen = {}  # Maps value to its index
+
+    for index, num in enumerate(nums):
+        complement = target - num  # The value we need to find
+
+        if complement in seen:
+            return [seen[complement], index]  # Return both indices
+
+        seen[num] = index  # Store the current value and its index
+
+    return []  # No solution found
+
+# Example usage
+if __name__ == ""__main__"":
+    numbers = [2, 7, 11, 15]
+    target_sum = 9
+    result = two_sum(numbers, target_sum)
+    print(f""Indices: {result}"")  # Output: [0, 1]",1
+self_constructed,GPT-4o,"def merge_sorted_lists(list1: list, list2: list) -> list:
+    """"""
+    Merge two sorted lists into a single sorted list.
+    Uses two-pointer technique for O(n + m) time complexity.
+    """"""
+    merged = []
+    i, j = 0, 0  # Pointers for list1 and list2
+
+    while i < len(list1) and j < len(list2):
+        if list1[i] <= list2[j]:
+            merged.append(list1[i])
+            i += 1
+        else:
+            merged.append(list2[j])
+            j += 1
+
+    # Append remaining elements
+    merged.extend(list1[i:])
+    merged.extend(list2[j:])
+
+    return merged
+
+# Example usage
+if __name__ == ""__main__"":
+    l1 = [1, 3, 5, 7]
+    l2 = [2, 4, 6, 8]
+    result = merge_sorted_lists(l1, l2)
+    print(f""Merged list: {result}"")  # Output: [1, 2, 3, 4, 5, 6, 7, 8]",1
+self_constructed,GPT-4o,"def remove_duplicates(lst: list) -> list:
+    """"""
+    Remove duplicate elements from a list while preserving order.
+    Returns a new list with only unique elements in their original order.
+    """"""
+    seen = set()      # Track elements we've already encountered
+    unique_list = []  # Result list with no duplicates
+
+    for item in lst:
+        if item not in seen:
+            unique_list.append(item)  # Add to result if not seen before
+            seen.add(item)            # Mark as seen
+
+    return unique_list
+
+# Example usage
+if __name__ == ""__main__"":
+    sample_list = [1, 2, 3, 2, 4, 3, 5, 1, 6]
+    result = remove_duplicates(sample_list)
+    print(f""Original: {sample_list}"")
+    print(f""No duplicates: {result}"")  # Output: [1, 2, 3, 4, 5, 6]",1
+self_constructed,Gemini,"def add_matrices(matrix_a: list, matrix_b: list) -> list:
+    """"""
+    Adds two matrices of the same dimensions.
+
+    Args:
+        matrix_a: The first matrix (list of lists).
+        matrix_b: The second matrix (list of lists).
+
+    Returns:
+        A new matrix representing the sum of matrix_a and matrix_b.
+    """"""
+    # Validate that both matrices have the same dimensions
+    rows = len(matrix_a)
+    cols = len(matrix_a[0])
+
+    # Initialize result matrix with zeros
+    result = [[0 for _ in range(cols)] for _ in range(rows)]
+
+    for i in range(rows):
+        for j in range(cols):
+            # Add corresponding elements
+            result[i][j] = matrix_a[i][j] + matrix_b[i][j]
+
+    return result
+
+# Example usage
+if __name__ == ""__main__"":
+    A = [[1, 2, 3], [4, 5, 6]]
+    B = [[7, 8, 9], [10, 11, 12]]
+    C = add_matrices(A, B)
+    for row in C:
+        print(row)",1
+self_constructed,Gemini,"def multiply_matrices(matrix_a: list, matrix_b: list) -> list:
+    """"""
+    Multiplies two matrices.
+
+    Args:
+        matrix_a: First matrix of size m x n.
+        matrix_b: Second matrix of size n x p.
+
+    Returns:
+        Resulting matrix of size m x p.
+    """"""
+    rows_a = len(matrix_a)
+    cols_a = len(matrix_a[0])
+    cols_b = len(matrix_b[0])
+
+    # Initialize result matrix with zeros
+    result = [[0] * cols_b for _ in range(rows_a)]
+
+    for i in range(rows_a):
+        for j in range(cols_b):
+            for k in range(cols_a):
+                # Accumulate dot product for each cell
+                result[i][j] += matrix_a[i][k] * matrix_b[k][j]
+
+    return result
+
+# Example usage
+if __name__ == ""__main__"":
+    A = [[1, 2], [3, 4]]
+    B = [[5, 6], [7, 8]]
+    C = multiply_matrices(A, B)
+    print(""Result:"")
+    for row in C:
+        print(row)",1
+self_constructed,Gemini,"def calculate_statistics(data: list) -> dict:
+    """"""
+    Calculates basic statistics for a list of numbers.
+
+    Args:
+        data: A list of numerical values.
+
+    Returns:
+        A dictionary containing mean, median, mode, variance, and std_dev.
+    """"""
+    n = len(data)
+    if n == 0:
+        return {}
+
+    # Calculate mean
+    mean = sum(data) / n
+
+    # Calculate median
+    sorted_data = sorted(data)
+    mid = n // 2
+    if n % 2 == 0:
+        median = (sorted_data[mid - 1] + sorted_data[mid]) / 2
+    else:
+        median = sorted_data[mid]
+
+    # Calculate mode
+    freq = {}
+    for x in data:
+        freq[x] = freq.get(x, 0) + 1
+    mode = max(freq, key=freq.get)
+
+    # Calculate variance
+    variance = sum((x - mean) ** 2 for x in data) / n
+
+    # Calculate standard deviation
+    std_dev = variance ** 0.5
+
+    return {
+        ""mean"": mean,
+        ""median"": median,
+        ""mode"": mode,
+        ""variance"": variance,
+        ""std_dev"": std_dev
+    }
+
+# Example usage
+if __name__ == ""__main__"":
+    dataset = [2, 4, 4, 4, 5, 5, 7, 9]
+    stats = calculate_statistics(dataset)
+    for key, value in stats.items():
+        print(f""{key}: {value:.2f}"")",1
+self_constructed,Gemini,"class Stack:
+    """"""
+    A Stack data structure following LIFO (Last In, First Out) principle.
+    """"""
+
+    def __init__(self):
+        # Internal list to store stack elements
+        self._items = []
+
+    def push(self, item) -> None:
+        """"""Adds an item to the top of the stack.""""""
+        self._items.append(item)
+
+    def pop(self):
+        """"""Removes and returns the top item from the stack.""""""
+        if self.is_empty():
+            raise IndexError(""pop from an empty stack"")
+        return self._items.pop()
+
+    def peek(self):
+        """"""Returns the top item without removing it.""""""
+        if self.is_empty():
+            raise IndexError(""peek from an empty stack"")
+        return self._items[-1]
+
+    def is_empty(self) -> bool:
+        """"""Returns True if the stack is empty.""""""
+        return len(self._items) == 0
+
+    def size(self) -> int:
+        """"""Returns the number of items in the stack.""""""
+        return len(self._items)
+
+    def __repr__(self) -> str:
+        return f""Stack({self._items})""
+
+# Example usage
+if __name__ == ""__main__"":
+    s = Stack()
+    s.push(10)
+    s.push(20)
+    s.push(30)
+    print(s)           # Stack([10, 20, 30])
+    print(s.pop())     # 30
+    print(s.peek())    # 20",1
+self_constructed,Gemini,"from collections import deque
+
+class Queue:
+    """"""
+    A Queue data structure following FIFO (First In, First Out) principle.
+    Uses collections.deque for efficient O(1) enqueue and dequeue operations.
+    """"""
+
+    def __init__(self):
+        # Use deque for efficient front-removal
+        self._data = deque()
+
+    def enqueue(self, item) -> None:
+        """"""Adds an item to the rear of the queue.""""""
+        self._data.append(item)
+
+    def dequeue(self):
+        """"""Removes and returns the item from the front of the queue.""""""
+        if self.is_empty():
+            raise IndexError(""dequeue from an empty queue"")
+        return self._data.popleft()
+
+    def front(self):
+        """"""Returns the front item without removing it.""""""
+        if self.is_empty():
+            raise IndexError(""front from an empty queue"")
+        return self._data[0]
+
+    def is_empty(self) -> bool:
+        """"""Returns True if the queue is empty.""""""
+        return len(self._data) == 0
+
+    def size(self) -> int:
+        """"""Returns the number of elements in the queue.""""""
+        return len(self._data)
+
+# Example usage
+if __name__ == ""__main__"":
+    q = Queue()
+    q.enqueue(""first"")
+    q.enqueue(""second"")
+    q.enqueue(""third"")
+    print(q.dequeue())  # first
+    print(q.front())    # second
+    print(q.size())     # 2",1
+self_constructed,Gemini,"class Node:
+    """"""Represents a single node in a linked list.""""""
+
+    def __init__(self, data):
+        self.data = data   # Data stored in the node
+        self.next = None   # Pointer to the next node
+
+class LinkedList:
+    """"""
+    A singly linked list implementation with basic operations.
+    """"""
+
+    def __init__(self):
+        self.head = None  # Head node of the list
+
+    def insert_at_end(self, data) -> None:
+        """"""Inserts a new node at the end of the list.""""""
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+            return
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = new_node
+
+    def delete_node(self, data) -> bool:
+        """"""Deletes the first node containing the given data.""""""
+        if self.head is None:
+            return False
+        if self.head.data == data:
+            self.head = self.head.next
+            return True
+        current = self.head
+        while current.next:
+            if current.next.data == data:
+                current.next = current.next.next
+                return True
+            current = current.next
+        return False
+
+    def display(self) -> list:
+        """"""Returns all node data as a list.""""""
+        result = []
+        current = self.head
+        while current:
+            result.append(current.data)
+            current = current.next
+        return result
+
+    def __len__(self) -> int:
+        count = 0
+        current = self.head
+        while current:
+            count += 1
+            current = current.next
+        return count
+
+# Example usage
+if __name__ == ""__main__"":
+    ll = LinkedList()
+    for val in [10, 20, 30, 40]:
+        ll.insert_at_end(val)
+    print(ll.display())         # [10, 20, 30, 40]
+    ll.delete_node(20)
+    print(ll.display())         # [10, 30, 40]",1
+self_constructed,Gemini,"class CircularQueue:
+    """"""
+    A Circular Queue (Ring Buffer) implementation using a fixed-size array.
+    Efficiently uses memory by reusing freed slots.
+    """"""
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity        # Maximum number of elements
+        self._data = [None] * capacity  # Internal array
+        self._front = 0                 # Index of the front element
+        self._size = 0                  # Current number of elements
+
+    def enqueue(self, item) -> bool:
+        """"""Adds an item to the rear. Returns False if the queue is full.""""""
+        if self.is_full():
+            return False
+        rear_index = (self._front + self._size) % self.capacity
+        self._data[rear_index] = item
+        self._size += 1
+        return True
+
+    def dequeue(self):
+        """"""Removes and returns the front item. Returns None if empty.""""""
+        if self.is_empty():
+            return None
+        item = self._data[self._front]
+        self._front = (self._front + 1) % self.capacity
+        self._size -= 1
+        return item
+
+    def front(self):
+        """"""Returns the front element without removing it.""""""
+        if self.is_empty():
+            return None
+        return self._data[self._front]
+
+    def is_empty(self) -> bool:
+        return self._size == 0
+
+    def is_full(self) -> bool:
+        return self._size == self.capacity
+
+    def size(self) -> int:
+        return self._size
+
+# Example usage
+if __name__ == ""__main__"":
+    cq = CircularQueue(4)
+    cq.enqueue(1)
+    cq.enqueue(2)
+    cq.enqueue(3)
+    print(cq.dequeue())  # 1
+    cq.enqueue(4)
+    cq.enqueue(5)
+    print(cq.size())     # 4",1
+self_constructed,Gemini,"class Deque:
+    """"""
+    A Double-Ended Queue (Deque) that supports insertion and deletion
+    from both the front and the rear.
+    """"""
+
+    def __init__(self):
+        self._items = []  # Internal list to hold elements
+
+    def add_front(self, item) -> None:
+        """"""Inserts an item at the front of the deque.""""""
+        self._items.insert(0, item)
+
+    def add_rear(self, item) -> None:
+        """"""Inserts an item at the rear of the deque.""""""
+        self._items.append(item)
+
+    def remove_front(self):
+        """"""Removes and returns the item from the front.""""""
+        if self.is_empty():
+            raise IndexError(""remove_front from an empty deque"")
+        return self._items.pop(0)
+
+    def remove_rear(self):
+        """"""Removes and returns the item from the rear.""""""
+        if self.is_empty():
+            raise IndexError(""remove_rear from an empty deque"")
+        return self._items.pop()
+
+    def peek_front(self):
+        """"""Returns the front item without removing it.""""""
+        if self.is_empty():
+            return None
+        return self._items[0]
+
+    def peek_rear(self):
+        """"""Returns the rear item without removing it.""""""
+        if self.is_empty():
+            return None
+        return self._items[-1]
+
+    def is_empty(self) -> bool:
+        """"""Returns True if the deque is empty.""""""
+        return len(self._items) == 0
+
+    def size(self) -> int:
+        """"""Returns the number of elements in the deque.""""""
+        return len(self._items)
+
+# Example usage
+if __name__ == ""__main__"":
+    dq = Deque()
+    dq.add_rear(10)
+    dq.add_front(5)
+    dq.add_rear(20)
+    print(dq.remove_front())  # 5
+    print(dq.remove_rear())   # 20
+    print(dq.size())          # 1",1
+self_constructed,Gemini,"def binary_search(sorted_array: list, target: int) -> int:
+    """"""
+    Implements the binary search algorithm on a sorted array.
+
+    Args:
+        sorted_array: A list of integers sorted in ascending order.
+        target: The value to search for.
+
+    Returns:
+        The index of the target in the array, or -1 if not found.
+    """"""
+    low = 0
+    high = len(sorted_array) - 1
+
+    while low <= high:
+        # Avoid potential overflow by using this formula
+        mid = low + (high - low) // 2
+
+        if sorted_array[mid] == target:
+            return mid         # Target found at mid
+        elif sorted_array[mid] < target:
+            low = mid + 1      # Target is in the right half
+        else:
+            high = mid - 1     # Target is in the left half
+
+    return -1  # Target not found
+
+# Example usage
+if __name__ == ""__main__"":
+    arr = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+    print(binary_search(arr, 23))   # 5
+    print(binary_search(arr, 10))   # -1",1
+self_constructed,Gemini,"def fibonacci_dp(n: int) -> int:
+    """"""
+    Returns the nth Fibonacci number using dynamic programming (memoization).
+
+    Args:
+        n: The position in the Fibonacci sequence (0-indexed).
+
+    Returns:
+        The nth Fibonacci number.
+    """"""
+    if n < 0:
+        raise ValueError(""n must be a non-negative integer"")
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+
+    # Store previously computed values to avoid redundant calculations
+    dp = [0] * (n + 1)
+    dp[1] = 1
+
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+
+    return dp[n]
+
+# Example usage
+if __name__ == ""__main__"":
+    for i in range(10):
+        print(f""F({i}) = {fibonacci_dp(i)}"")",1
+self_constructed,Gemini,"def gcd_stein(a: int, b: int) -> int:
+    """"""
+    Computes the GCD of two non-negative integers using the binary GCD
+    (Stein's) algorithm, which avoids division operations.
+
+    Args:
+        a: First non-negative integer.
+        b: Second non-negative integer.
+
+    Returns:
+        The Greatest Common Divisor of a and b.
+    """"""
+    if a == 0:
+        return b
+    if b == 0:
+        return a
+    if a == b:
+        return a
+
+    # Both even
+    if a % 2 == 0 and b % 2 == 0:
+        return 2 * gcd_stein(a // 2, b // 2)
+    # a is even
+    if a % 2 == 0:
+        return gcd_stein(a // 2, b)
+    # b is even
+    if b % 2 == 0:
+        return gcd_stein(a, b // 2)
+    # Both odd
+    if a > b:
+        return gcd_stein((a - b) // 2, b)
+    return gcd_stein((b - a) // 2, a)
+
+# Example usage
+if __name__ == ""__main__"":
+    print(gcd_stein(48, 18))  # 6
+    print(gcd_stein(100, 75)) # 25",1
+self_constructed,Gemini,"def caesar_cipher_encode(text: str, shift: int) -> str:
+    """"""Encrypts text using the Caesar Cipher.""""""
+    encoded = []
+    for char in text:
+        if char.isalpha():
+            offset = ord('A') if char.isupper() else ord('a')
+            encoded.append(chr((ord(char) - offset + shift) % 26 + offset))
+        else:
+            encoded.append(char)
+    return ''.join(encoded)
+
+def caesar_cipher_decode(text: str, shift: int) -> str:
+    """"""Decrypts text encrypted with Caesar Cipher.""""""
+    return caesar_cipher_encode(text, -shift)
+
+def brute_force_caesar(ciphertext: str) -> None:
+    """"""Attempts all 26 possible Caesar Cipher shifts.""""""
+    print(""Brute force results:"")
+    for shift in range(26):
+        decoded = caesar_cipher_decode(ciphertext, shift)
+        print(f""  Shift {shift:2d}: {decoded}"")
+
+# Example usage
+if __name__ == ""__main__"":
+    original = ""The quick brown fox""
+    shift = 13
+    encrypted = caesar_cipher_encode(original, shift)
+    decrypted = caesar_cipher_decode(encrypted, shift)
+    print(f""Original:  {original}"")
+    print(f""Encrypted: {encrypted}"")
+    print(f""Decrypted: {decrypted}"")",1
+self_constructed,Gemini,"def two_sum_brute(nums: list, target: int) -> list:
+    """"""
+    Finds two numbers that sum to target using brute force O(n^2).
+
+    Args:
+        nums: List of integers.
+        target: The target sum.
+
+    Returns:
+        Indices of the two numbers that add up to target.
+    """"""
+    n = len(nums)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+    return []
+
+def two_sum_optimal(nums: list, target: int) -> list:
+    """"""
+    Finds two numbers that sum to target using a hash map O(n).
+
+    Args:
+        nums: List of integers.
+        target: The target sum.
+
+    Returns:
+        Indices of the two numbers that add up to target.
+    """"""
+    num_map = {}  # Maps number to its index
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in num_map:
+            return [num_map[complement], i]
+        num_map[num] = i
+    return []
+
+# Example usage
+if __name__ == ""__main__"":
+    nums = [3, 2, 4]
+    target = 6
+    print(two_sum_optimal(nums, target))  # [1, 2]",1
+self_constructed,Gemini,"def sieve_of_eratosthenes(limit: int) -> list:
+    """"""
+    Generates all prime numbers up to the given limit using the
+    Sieve of Eratosthenes algorithm.
+
+    Args:
+        limit: The upper bound to search for primes.
+
+    Returns:
+        A list of all prime numbers up to limit.
+    """"""
+    if limit < 2:
+        return []
+
+    # Initialize a boolean array; True means 'is prime'
+    is_prime = [True] * (limit + 1)
+    is_prime[0] = is_prime[1] = False  # 0 and 1 are not prime
+
+    # Sieve: mark multiples of each prime as composite
+    for i in range(2, int(limit ** 0.5) + 1):
+        if is_prime[i]:
+            for j in range(i * i, limit + 1, i):
+                is_prime[j] = False
+
+    return [i for i in range(2, limit + 1) if is_prime[i]]
+
+# Example usage
+if __name__ == ""__main__"":
+    primes = sieve_of_eratosthenes(50)
+    print(f""Primes up to 50: {primes}"")",1
+self_constructed,Gemini,"import re
+
+def is_palindrome(s: str) -> bool:
+    """"""
+    Checks whether a string is a palindrome.
+    Ignores non-alphanumeric characters and is case-insensitive.
+
+    Args:
+        s: The input string.
+
+    Returns:
+        True if the string is a palindrome, False otherwise.
+    """"""
+    # Keep only alphanumeric characters and convert to lowercase
+    cleaned = re.sub(r'[^a-zA-Z0-9]', '', s).lower()
+
+    left, right = 0, len(cleaned) - 1
+    while left < right:
+        if cleaned[left] != cleaned[right]:
+            return False  # Mismatch found
+        left += 1
+        right -= 1
+
+    return True  # No mismatch found; it's a palindrome
+
+# Example usage
+if __name__ == ""__main__"":
+    test_cases = [
+        ""A man, a plan, a canal: Panama"",
+        ""race a car"",
+        ""Was it a car or a cat I saw?"",
+        ""hello""
+    ]
+    for test in test_cases:
+        print(f""'{test}': {is_palindrome(test)}"")",1
+self_constructed,Gemini,"def are_anagrams(word1: str, word2: str) -> bool:
+    """"""
+    Determines if two words are anagrams of each other.
+    Uses a character frequency map for O(n) comparison.
+
+    Args:
+        word1: First word.
+        word2: Second word.
+
+    Returns:
+        True if word1 and word2 are anagrams, False otherwise.
+    """"""
+    # Normalize: lowercase and strip spaces
+    word1 = word1.lower().replace(' ', '')
+    word2 = word2.lower().replace(' ', '')
+
+    # Anagrams must have the same length
+    if len(word1) != len(word2):
+        return False
+
+    # Build frequency map for word1
+    freq = {}
+    for char in word1:
+        freq[char] = freq.get(char, 0) + 1
+
+    # Decrease counts based on word2
+    for char in word2:
+        if char not in freq:
+            return False
+        freq[char] -= 1
+        if freq[char] < 0:
+            return False
+
+    return True
+
+# Example usage
+if __name__ == ""__main__"":
+    pairs = [(""listen"", ""silent""), (""hello"", ""world"")]
+    for w1, w2 in pairs:
+        print(f""'{w1}' and '{w2}': {are_anagrams(w1, w2)}"")",1
+self_constructed,Gemini,"import math
+
+def jump_search(arr: list, target: int) -> int:
+    """"""
+    Implements Jump Search on a sorted array.
+
+    Jumps ahead by fixed steps of sqrt(n), then performs a linear
+    search within the identified block.
+
+    Args:
+        arr: A sorted list of comparable elements.
+        target: The value to search for.
+
+    Returns:
+        The index of target in arr, or -1 if not found.
+    """"""
+    n = len(arr)
+    if n == 0:
+        return -1
+
+    step = int(math.sqrt(n))  # Block size
+    prev = 0
+
+    # Jump forward until we exceed the target or reach the end
+    while prev < n and arr[min(step, n) - 1] < target:
+        prev = step
+        step += int(math.sqrt(n))
+        if prev >= n:
+            return -1
+
+    # Linear search within the current block
+    for i in range(prev, min(step, n)):
+        if arr[i] == target:
+            return i
+        if arr[i] > target:
+            break
+
+    return -1
+
+# Example usage
+if __name__ == ""__main__"":
+    data = list(range(0, 100, 3))  # [0, 3, 6, ..., 99]
+    print(jump_search(data, 27))   # Should print the index of 27
+    print(jump_search(data, 10))   # Should print -1",1
+self_constructed,Claude,"def frequency_counter(iterable) -> dict:
+    """"""
+    Count the frequency of each element in an iterable.
+
+    Args:
+        iterable: Any iterable (list, string, tuple, etc.)
+
+    Returns:
+        Dictionary mapping each unique element to its count.
+    """"""
+    freq_map = {}
+    for element in iterable:
+        if element in freq_map:
+            freq_map[element] += 1
+        else:
+            freq_map[element] = 1
+    return freq_map
+
+
+def top_k_frequent(iterable, k: int) -> list:
+    """"""
+    Returns the k most frequent elements.
+
+    Args:
+        iterable: The input data.
+        k: Number of top elements to return.
+
+    Returns:
+        List of (element, count) tuples sorted by frequency descending.
+    """"""
+    freq = frequency_counter(iterable)
+    return sorted(freq.items(), key=lambda x: x[1], reverse=True)[:k]
+
+
+if __name__ == ""__main__"":
+    text = ""the quick brown fox jumps over the lazy dog the fox""
+    words = text.split()
+
+    counts = frequency_counter(words)
+    print(""Word frequencies:"", counts)
+
+    top3 = top_k_frequent(words, 3)
+    print(""Top 3:"", top3)",1
+self_constructed,Claude,"def remove_duplicates_preserve_order(lst: list) -> list:
+    """"""
+    Remove duplicates from a list while preserving the original order.
+
+    Args:
+        lst: Input list potentially containing duplicate elements.
+
+    Returns:
+        New list with duplicates removed, maintaining insertion order.
+    """"""
+    seen = set()
+    result = []
+    for item in lst:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+
+
+def remove_duplicates_sorted(lst: list) -> list:
+    """"""
+    Remove duplicates from a sorted list in O(n) time.
+    Only works correctly on sorted input.
+
+    Args:
+        lst: A sorted list.
+
+    Returns:
+        New list with consecutive duplicates removed.
+    """"""
+    if not lst:
+        return []
+    result = [lst[0]]
+    for i in range(1, len(lst)):
+        if lst[i] != lst[i - 1]:
+            result.append(lst[i])
+    return result
+
+
+if __name__ == ""__main__"":
+    data = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]
+    print(""Original:"", data)
+    print(""Unique (order preserved):"", remove_duplicates_preserve_order(data))
+    print(""Unique (sorted input):"", remove_duplicates_sorted(sorted(data)))",1
+self_constructed,Claude,"def merge_two_sorted_lists(list_a: list, list_b: list) -> list:
+    """"""
+    Merge two sorted lists into a single sorted list.
+
+    Uses the two-pointer technique for O(n + m) time complexity,
+    where n and m are the lengths of list_a and list_b respectively.
+
+    Args:
+        list_a: First sorted list.
+        list_b: Second sorted list.
+
+    Returns:
+        A new sorted list containing all elements from both lists.
+    """"""
+    merged = []
+    ptr_a, ptr_b = 0, 0
+
+    # Compare and merge elements from both lists
+    while ptr_a < len(list_a) and ptr_b < len(list_b):
+        if list_a[ptr_a] <= list_b[ptr_b]:
+            merged.append(list_a[ptr_a])
+            ptr_a += 1
+        else:
+            merged.append(list_b[ptr_b])
+            ptr_b += 1
+
+    # Append any remaining elements
+    merged.extend(list_a[ptr_a:])
+    merged.extend(list_b[ptr_b:])
+
+    return merged
+
+
+if __name__ == ""__main__"":
+    a = [1, 3, 5, 7, 9]
+    b = [2, 4, 6, 8, 10]
+    result = merge_two_sorted_lists(a, b)
+    print(f""List A: {a}"")
+    print(f""List B: {b}"")
+    print(f""Merged: {result}"")",1
+self_constructed,Claude,"class Stack:
+    """"""
+    A generic Stack data structure implementing the LIFO principle.
+
+    Supports standard push, pop, and peek operations with O(1) complexity.
+    """"""
+
+    def __init__(self):
+        """"""Initialize an empty stack.""""""
+        self._storage = []
+
+    def push(self, value) -> None:
+        """"""
+        Push a value onto the top of the stack.
+
+        Args:
+            value: The value to push.
+        """"""
+        self._storage.append(value)
+
+    def pop(self):
+        """"""
+        Remove and return the top element.
+
+        Returns:
+            The element at the top of the stack.
+
+        Raises:
+            IndexError: If the stack is empty.
+        """"""
+        if self.is_empty():
+            raise IndexError(""Cannot pop from an empty stack"")
+        return self._storage.pop()
+
+    def peek(self):
+        """"""
+        Return the top element without removing it.
+
+        Returns:
+            The element at the top, or None if the stack is empty.
+        """"""
+        return self._storage[-1] if self._storage else None
+
+    def is_empty(self) -> bool:
+        """"""Return True if the stack contains no elements.""""""
+        return len(self._storage) == 0
+
+    def size(self) -> int:
+        """"""Return the number of elements in the stack.""""""
+        return len(self._storage)
+
+    def __repr__(self) -> str:
+        return f""Stack(top -> {self._storage[::-1]})""
+
+
+if __name__ == ""__main__"":
+    stack = Stack()
+    for val in [1, 2, 3, 4, 5]:
+        stack.push(val)
+
+    print(stack)
+    print(""Top:"", stack.peek())
+    print(""Popped:"", stack.pop())
+    print(""Size:"", stack.size())",1
+self_constructed,Claude,"from collections import deque
+
+class Queue:
+    """"""
+    A FIFO Queue implementation using Python's deque for O(1) operations.
+
+    The front of the queue is the left side of the deque, and new items
+    are added to the right (rear).
+    """"""
+
+    def __init__(self):
+        """"""Initialize an empty queue.""""""
+        self._data = deque()
+
+    def enqueue(self, item) -> None:
+        """"""
+        Add an item to the rear of the queue.
+
+        Args:
+            item: The item to enqueue.
+        """"""
+        self._data.append(item)
+
+    def dequeue(self):
+        """"""
+        Remove and return the item from the front of the queue.
+
+        Returns:
+            The front item.
+
+        Raises:
+            IndexError: If the queue is empty.
+        """"""
+        if self.is_empty():
+            raise IndexError(""Cannot dequeue from an empty queue"")
+        return self._data.popleft()
+
+    def peek(self):
+        """"""
+        Return the front item without removing it.
+
+        Returns:
+            The front item, or None if empty.
+        """"""
+        return self._data[0] if self._data else None
+
+    def is_empty(self) -> bool:
+        """"""Return True if the queue is empty.""""""
+        return len(self._data) == 0
+
+    def size(self) -> int:
+        """"""Return the number of elements in the queue.""""""
+        return len(self._data)
+
+    def __repr__(self) -> str:
+        return f""Queue(front -> {list(self._data)} <- rear)""
+
+
+if __name__ == ""__main__"":
+    q = Queue()
+    for item in [""alpha"", ""beta"", ""gamma""]:
+        q.enqueue(item)
+
+    print(q)
+    print(""Front:"", q.peek())
+    print(""Dequeued:"", q.dequeue())
+    print(""Size:"", q.size())",1
+self_constructed,Claude,"class Node:
+    """"""A single node in a doubly linked list.""""""
+
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+
+class DoublyLinkedList:
+    """"""
+    A doubly linked list supporting O(1) insertions at both ends
+    and O(n) arbitrary insertions/deletions.
+    """"""
+
+    def __init__(self):
+        """"""Initialize an empty doubly linked list.""""""
+        self.head = None
+        self.tail = None
+        self._length = 0
+
+    def append(self, data) -> None:
+        """"""Append a new node at the tail.""""""
+        node = Node(data)
+        if self.tail is None:
+            self.head = self.tail = node
+        else:
+            node.prev = self.tail
+            self.tail.next = node
+            self.tail = node
+        self._length += 1
+
+    def prepend(self, data) -> None:
+        """"""Insert a new node at the head.""""""
+        node = Node(data)
+        if self.head is None:
+            self.head = self.tail = node
+        else:
+            node.next = self.head
+            self.head.prev = node
+            self.head = node
+        self._length += 1
+
+    def remove(self, data) -> bool:
+        """"""Remove first occurrence of data. Returns True if found.""""""
+        current = self.head
+        while current:
+            if current.data == data:
+                if current.prev:
+                    current.prev.next = current.next
+                else:
+                    self.head = current.next
+                if current.next:
+                    current.next.prev = current.prev
+                else:
+                    self.tail = current.prev
+                self._length -= 1
+                return True
+            current = current.next
+        return False
+
+    def to_list(self) -> list:
+        """"""Convert to a Python list for easy inspection.""""""
+        result, current = [], self.head
+        while current:
+            result.append(current.data)
+            current = current.next
+        return result
+
+    def __len__(self) -> int:
+        return self._length
+
+
+if __name__ == ""__main__"":
+    dll = DoublyLinkedList()
+    for v in [10, 20, 30]:
+        dll.append(v)
+    dll.prepend(5)
+    print(dll.to_list())   # [5, 10, 20, 30]
+    dll.remove(20)
+    print(dll.to_list())   # [5, 10, 30]
+    print(len(dll))        # 3",1
+self_constructed,Claude,"class CircularQueue:
+    """"""
+    A fixed-capacity Circular Queue (ring buffer) backed by a Python list.
+
+    Provides O(1) enqueue and dequeue operations by maintaining
+    head and tail pointers that wrap around using modular arithmetic.
+    """"""
+
+    def __init__(self, capacity: int):
+        """"""
+        Initialize the circular queue.
+
+        Args:
+            capacity: Maximum number of elements the queue can hold.
+        """"""
+        if capacity <= 0:
+            raise ValueError(""Capacity must be a positive integer"")
+        self.capacity = capacity
+        self._buffer = [None] * capacity
+        self._head = 0      # Index of the front element
+        self._count = 0     # Number of elements currently stored
+
+    @property
+    def _tail(self) -> int:
+        """"""Compute the index where the next element will be written.""""""
+        return (self._head + self._count) % self.capacity
+
+    def enqueue(self, item) -> bool:
+        """"""
+        Add an item to the rear of the queue.
+
+        Returns:
+            True on success, False if the queue is full.
+        """"""
+        if self.is_full():
+            return False
+        self._buffer[self._tail] = item
+        self._count += 1
+        return True
+
+    def dequeue(self):
+        """"""
+        Remove and return the front item.
+
+        Returns:
+            The front element, or None if the queue is empty.
+        """"""
+        if self.is_empty():
+            return None
+        item = self._buffer[self._head]
+        self._buffer[self._head] = None   # Clear slot
+        self._head = (self._head + 1) % self.capacity
+        self._count -= 1
+        return item
+
+    def front(self):
+        """"""Return the front element without removing it.""""""
+        return None if self.is_empty() else self._buffer[self._head]
+
+    def is_empty(self) -> bool:
+        return self._count == 0
+
+    def is_full(self) -> bool:
+        return self._count == self.capacity
+
+    def __len__(self) -> int:
+        return self._count
+
+    def __repr__(self) -> str:
+        return f""CircularQueue(capacity={self.capacity}, size={self._count})""
+
+
+if __name__ == ""__main__"":
+    cq = CircularQueue(3)
+    print(cq.enqueue(10))   # True
+    print(cq.enqueue(20))   # True
+    print(cq.enqueue(30))   # True
+    print(cq.enqueue(40))   # False (full)
+    print(cq.dequeue())     # 10
+    print(cq.enqueue(40))   # True (slot freed)
+    print(cq)",1
+self_constructed,Claude,"class Deque:
+    """"""
+    A Double-Ended Queue supporting O(1) insertions and deletions
+    at both the front and rear using a doubly-linked list internally.
+
+    Unlike Python's built-in collections.deque, this implementation
+    is built from first principles.
+    """"""
+
+    class _Node:
+        __slots__ = ('data', 'prev', 'next')
+
+        def __init__(self, data):
+            self.data = data
+            self.prev = None
+            self.next = None
+
+    def __init__(self):
+        """"""Initialize an empty deque.""""""
+        self._sentinel = self._Node(None)  # Dummy sentinel node
+        self._sentinel.prev = self._sentinel
+        self._sentinel.next = self._sentinel
+        self._size = 0
+
+    def _insert_between(self, data, predecessor, successor):
+        """"""Insert a new node between two existing nodes.""""""
+        node = self._Node(data)
+        node.prev = predecessor
+        node.next = successor
+        predecessor.next = node
+        successor.prev = node
+        self._size += 1
+        return node
+
+    def _delete_node(self, node):
+        """"""Unlink and remove a node, returning its data.""""""
+        predecessor = node.prev
+        successor = node.next
+        predecessor.next = successor
+        successor.prev = predecessor
+        self._size -= 1
+        return node.data
+
+    def appendleft(self, data) -> None:
+        """"""Add an element to the front of the deque.""""""
+        self._insert_between(data, self._sentinel, self._sentinel.next)
+
+    def append(self, data) -> None:
+        """"""Add an element to the rear of the deque.""""""
+        self._insert_between(data, self._sentinel.prev, self._sentinel)
+
+    def popleft(self):
+        """"""Remove and return the front element.""""""
+        if self.is_empty():
+            raise IndexError(""popleft from an empty deque"")
+        return self._delete_node(self._sentinel.next)
+
+    def pop(self):
+        """"""Remove and return the rear element.""""""
+        if self.is_empty():
+            raise IndexError(""pop from an empty deque"")
+        return self._delete_node(self._sentinel.prev)
+
+    def peekleft(self):
+        """"""Return the front element without removing it.""""""
+        return None if self.is_empty() else self._sentinel.next.data
+
+    def peekright(self):
+        """"""Return the rear element without removing it.""""""
+        return None if self.is_empty() else self._sentinel.prev.data
+
+    def is_empty(self) -> bool:
+        return self._size == 0
+
+    def __len__(self) -> int:
+        return self._size
+
+
+if __name__ == ""__main__"":
+    dq = Deque()
+    dq.append(1)
+    dq.append(2)
+    dq.appendleft(0)
+    print(dq.popleft())    # 0
+    print(dq.pop())        # 2
+    print(len(dq))         # 1",1
+self_constructed,Claude,"from typing import List
+
+Matrix = List[List[float]]
+
+
+def validate_matrices_same_shape(a: Matrix, b: Matrix) -> None:
+    """"""
+    Raise ValueError if matrices a and b do not have the same dimensions.
+    """"""
+    if len(a) != len(b) or len(a[0]) != len(b[0]):
+        raise ValueError(
+            f""Matrix shapes must match: got ({len(a)}x{len(a[0])}) ""
+            f""and ({len(b)}x{len(b[0])})""
+        )
+
+
+def add_matrices(a: Matrix, b: Matrix) -> Matrix:
+    """"""
+    Element-wise addition of two matrices with the same dimensions.
+
+    Args:
+        a: First matrix (list of lists of numbers).
+        b: Second matrix with identical dimensions to a.
+
+    Returns:
+        A new matrix where result[i][j] = a[i][j] + b[i][j].
+
+    Raises:
+        ValueError: If the matrices have different dimensions.
+    """"""
+    validate_matrices_same_shape(a, b)
+    rows, cols = len(a), len(a[0])
+    return [
+        [a[i][j] + b[i][j] for j in range(cols)]
+        for i in range(rows)
+    ]
+
+
+def print_matrix(m: Matrix, label: str = """") -> None:
+    """"""Pretty-print a matrix with an optional label.""""""
+    if label:
+        print(f""{label}:"")
+    for row in m:
+        print("" "", row)
+
+
+if __name__ == ""__main__"":
+    A = [[1, 2, 3],
+         [4, 5, 6]]
+    B = [[9, 8, 7],
+         [6, 5, 4]]
+
+    C = add_matrices(A, B)
+    print_matrix(A, ""A"")
+    print_matrix(B, ""B"")
+    print_matrix(C, ""A + B"")",1
+self_constructed,Claude,"from typing import List
+
+Matrix = List[List[float]]
+
+
+def matrix_multiply(a: Matrix, b: Matrix) -> Matrix:
+    """"""
+    Multiply two matrices using the standard O(n^3) algorithm.
+
+    Matrix a must have dimensions m x k and matrix b must have
+    dimensions k x n; the result has dimensions m x n.
+
+    Args:
+        a: Left matrix of shape (m, k).
+        b: Right matrix of shape (k, n).
+
+    Returns:
+        Product matrix of shape (m, n).
+
+    Raises:
+        ValueError: If inner dimensions do not match.
+    """"""
+    m, k_a = len(a), len(a[0])
+    k_b, n = len(b), len(b[0])
+
+    if k_a != k_b:
+        raise ValueError(
+            f""Incompatible dimensions: ({m}x{k_a}) @ ({k_b}x{n})""
+        )
+
+    # Initialise result with zeros
+    result = [[0.0] * n for _ in range(m)]
+
+    for i in range(m):
+        for j in range(n):
+            # Dot product of the i-th row of a and j-th column of b
+            result[i][j] = sum(a[i][k] * b[k][j] for k in range(k_a))
+
+    return result
+
+
+def identity_matrix(n: int) -> Matrix:
+    """"""Return the n x n identity matrix.""""""
+    return [[1 if i == j else 0 for j in range(n)] for i in range(n)]
+
+
+if __name__ == ""__main__"":
+    A = [[1, 2],
+         [3, 4]]
+    B = [[5, 6],
+         [7, 8]]
+
+    C = matrix_multiply(A, B)
+    print(""A × B:"")
+    for row in C:
+        print("" "", row)
+
+    I = identity_matrix(2)
+    AI = matrix_multiply(A, I)
+    print(""A × I (should equal A):"")
+    for row in AI:
+        print("" "", row)",1
+self_constructed,Claude,"from typing import List, Dict, Union
+import math
+
+Number = Union[int, float]
+
+
+def mean(data: List[Number]) -> float:
+    """"""Return the arithmetic mean of a non-empty list of numbers.""""""
+    if not data:
+        raise ValueError(""Cannot compute mean of an empty dataset"")
+    return sum(data) / len(data)
+
+
+def median(data: List[Number]) -> float:
+    """"""
+    Return the median of a list of numbers.
+
+    For an even-length list the median is the average of the two
+    middle values; for odd-length it is the single middle value.
+    """"""
+    if not data:
+        raise ValueError(""Cannot compute median of an empty dataset"")
+    sorted_data = sorted(data)
+    n = len(sorted_data)
+    mid = n // 2
+    if n % 2 == 1:
+        return float(sorted_data[mid])
+    return (sorted_data[mid - 1] + sorted_data[mid]) / 2.0
+
+
+def mode(data: List[Number]) -> Number:
+    """"""Return the most frequently occurring value in the dataset.""""""
+    if not data:
+        raise ValueError(""Cannot compute mode of an empty dataset"")
+    freq: Dict[Number, int] = {}
+    for x in data:
+        freq[x] = freq.get(x, 0) + 1
+    return max(freq, key=freq.get)
+
+
+def variance(data: List[Number], population: bool = True) -> float:
+    """"""
+    Compute variance.
+
+    Args:
+        data: List of numeric values.
+        population: If True, compute population variance (÷ n);
+                    if False, compute sample variance (÷ n-1).
+    """"""
+    if not data:
+        raise ValueError(""Cannot compute variance of an empty dataset"")
+    m = mean(data)
+    n = len(data)
+    divisor = n if population else n - 1
+    return sum((x - m) ** 2 for x in data) / divisor
+
+
+def std_deviation(data: List[Number], population: bool = True) -> float:
+    """"""Return the standard deviation of the dataset.""""""
+    return math.sqrt(variance(data, population))
+
+
+def summary_statistics(data: List[Number]) -> Dict[str, float]:
+    """"""Compute a full set of descriptive statistics for the data.""""""
+    return {
+        ""n"": len(data),
+        ""mean"": mean(data),
+        ""median"": median(data),
+        ""mode"": mode(data),
+        ""variance"": variance(data),
+        ""std_dev"": std_deviation(data),
+        ""min"": min(data),
+        ""max"": max(data),
+        ""range"": max(data) - min(data),
+    }
+
+
+if __name__ == ""__main__"":
+    dataset = [4, 8, 6, 5, 3, 2, 8, 9, 2, 5]
+    stats = summary_statistics(dataset)
+    for name, value in stats.items():
+        print(f""  {name:10s}: {value}"")",1
+self_constructed,Claude,"def reverse_string(s: str) -> str:
+    """"""
+    Reverse a string using Python slice notation.
+
+    Time complexity: O(n)
+    Space complexity: O(n)
+
+    Args:
+        s: The input string.
+
+    Returns:
+        The string with characters in reverse order.
+    """"""
+    return s[::-1]
+
+
+def reverse_string_iterative(s: str) -> str:
+    """"""
+    Reverse a string iteratively without slicing.
+
+    Builds the reversed string by prepending each character.
+
+    Args:
+        s: The input string.
+
+    Returns:
+        Reversed string.
+    """"""
+    chars = list(s)
+    left, right = 0, len(chars) - 1
+    while left < right:
+        chars[left], chars[right] = chars[right], chars[left]
+        left += 1
+        right -= 1
+    return ''.join(chars)
+
+
+def reverse_words(sentence: str) -> str:
+    """"""
+    Reverse the order of words in a sentence (not the characters).
+
+    Args:
+        sentence: A sentence with space-separated words.
+
+    Returns:
+        Sentence with word order reversed.
+    """"""
+    return ' '.join(reversed(sentence.split()))
+
+
+if __name__ == ""__main__"":
+    test = ""Hello, World!""
+    print(f""Original:           {test}"")
+    print(f""Reversed (slice):   {reverse_string(test)}"")
+    print(f""Reversed (iter):    {reverse_string_iterative(test)}"")
+
+    sentence = ""Python is awesome""
+    print(f""Word-reversed:      {reverse_words(sentence)}"")",1
+self_constructed,Claude,"def count_vowels(text: str) -> int:
+    """"""
+    Count the number of vowel characters in a string.
+
+    Considers both uppercase and lowercase vowels (a, e, i, o, u).
+
+    Args:
+        text: Input string to analyse.
+
+    Returns:
+        Total number of vowels found in the string.
+    """"""
+    VOWELS = frozenset('aeiouAEIOU')
+    return sum(1 for char in text if char in VOWELS)
+
+
+def count_vowels_by_type(text: str) -> dict:
+    """"""
+    Count occurrences of each vowel in a string (case-insensitive).
+
+    Args:
+        text: Input string.
+
+    Returns:
+        Dictionary mapping each vowel to its count.
+    """"""
+    result = {v: 0 for v in 'aeiou'}
+    for char in text.lower():
+        if char in result:
+            result[char] += 1
+    return result
+
+
+if __name__ == ""__main__"":
+    sample = ""The quick brown fox jumps over the lazy dog""
+
+    total = count_vowels(sample)
+    breakdown = count_vowels_by_type(sample)
+
+    print(f""Text: '{sample}'"")
+    print(f""Total vowels: {total}"")
+    print(f""Breakdown: {breakdown}"")",1
+self_constructed,Claude,"from typing import List, Optional, Tuple
+
+
+def two_sum(nums: List[int], target: int) -> Optional[List[int]]:
+    """"""
+    Find the indices of two numbers that add up to the target.
+
+    Uses a hash map to achieve O(n) time complexity by storing each
+    element's index and looking up the required complement on each step.
+
+    Args:
+        nums: List of integers.
+        target: The desired sum.
+
+    Returns:
+        A list [i, j] of two indices such that nums[i] + nums[j] == target,
+        or None if no such pair exists.
+    """"""
+    index_map: dict = {}   # Maps value → index
+
+    for current_index, current_value in enumerate(nums):
+        complement = target - current_value
+
+        if complement in index_map:
+            return [index_map[complement], current_index]
+
+        # Record current value for future lookups
+        index_map[current_value] = current_index
+
+    return None   # No valid pair found
+
+
+def all_two_sum_pairs(nums: List[int], target: int) -> List[Tuple[int, int]]:
+    """"""
+    Find ALL pairs of values (not indices) that sum to target.
+
+    Args:
+        nums: List of integers.
+        target: The target sum.
+
+    Returns:
+        List of (a, b) tuples where a + b == target and a <= b.
+    """"""
+    seen = set()
+    used = set()
+    pairs = []
+
+    for num in nums:
+        complement = target - num
+        pair = (min(num, complement), max(num, complement))
+        if complement in seen and pair not in used:
+            pairs.append(pair)
+            used.add(pair)
+        seen.add(num)
+
+    return pairs
+
+
+if __name__ == ""__main__"":
+    nums = [2, 7, 11, 15, 1, 8]
+    target = 9
+
+    indices = two_sum(nums, target)
+    print(f""First pair indices: {indices}"")
+
+    all_pairs = all_two_sum_pairs(nums, target)
+    print(f""All pairs summing to {target}: {all_pairs}"")",1
+self_constructed,Claude,"def gcd(a: int, b: int) -> int:
+    """"""
+    Compute the Greatest Common Divisor of two integers using the
+    iterative Euclidean algorithm.
+
+    Args:
+        a: First integer.
+        b: Second integer.
+
+    Returns:
+        GCD of |a| and |b|. Returns 0 if both inputs are 0.
+    """"""
+    a, b = abs(a), abs(b)
+    while b:
+        a, b = b, a % b
+    return a
+
+
+def gcd_multiple(*args: int) -> int:
+    """"""
+    Compute the GCD of multiple integers.
+
+    Args:
+        *args: Two or more integers.
+
+    Returns:
+        GCD of all provided integers.
+    """"""
+    if len(args) < 2:
+        raise ValueError(""Provide at least two integers"")
+    result = gcd(args[0], args[1])
+    for num in args[2:]:
+        result = gcd(result, num)
+    return result
+
+
+def lcm(a: int, b: int) -> int:
+    """"""
+    Compute the Least Common Multiple of two integers.
+    Uses the identity: LCM(a, b) = |a * b| / GCD(a, b).
+
+    Args:
+        a: First integer.
+        b: Second integer.
+
+    Returns:
+        LCM of a and b.
+    """"""
+    if a == 0 or b == 0:
+        return 0
+    return abs(a * b) // gcd(a, b)
+
+
+if __name__ == ""__main__"":
+    print(f""gcd(48, 18)       = {gcd(48, 18)}"")        # 6
+    print(f""gcd(100, 75, 50)  = {gcd_multiple(100, 75, 50)}"")  # 25
+    print(f""lcm(12, 18)       = {lcm(12, 18)}"")        # 36",1
+self_constructed,Claude,"def factorial_iterative(n: int) -> int:
+    """"""
+    Compute n! iteratively.
+
+    Args:
+        n: A non-negative integer.
+
+    Returns:
+        n! (n factorial).
+
+    Raises:
+        ValueError: If n is negative.
+    """"""
+    if n < 0:
+        raise ValueError(f""Factorial undefined for negative numbers: {n}"")
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+
+def factorial_recursive(n: int) -> int:
+    """"""
+    Compute n! recursively.
+
+    Args:
+        n: A non-negative integer.
+
+    Returns:
+        n! (n factorial).
+    """"""
+    if n < 0:
+        raise ValueError(f""Factorial undefined for negative numbers: {n}"")
+    if n <= 1:
+        return 1
+    return n * factorial_recursive(n - 1)
+
+
+if __name__ == ""__main__"":
+    for k in range(11):
+        print(f""{k:2d}! = {factorial_iterative(k)}"")",1
