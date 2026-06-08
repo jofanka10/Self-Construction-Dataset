@@ -1,26 +1,597 @@
-dataset_source,llm,code,label
-self_constructed,Human,"def merge_sort(arr):
-    if len(arr) <= 1:
-        return arr
-
-    mid = len(arr) // 2
-    left = merge_sort(arr[:mid])
-    right = merge_sort(arr[mid:])
-
-    return merge(left, right)
-
-def merge(left, right):
-    result = []
-    i = j = 0
-
-    while i < len(left) and j < len(right):
-        if left[i] <= right[j]:
-            result.append(left[i])
-            i += 1
-        else:
-            result.append(right[j])
-            j += 1
-
-    result.extend(left[i:])
-    result.extend(right[j:])
-    return result",0
+dataset_source,llm,code,label		
+self_constructed,Human,"def merge_sort(collection):		
+    def merge(left, right):		
+        left_index, right_index = 0, 0		
+        left_len, right_len = len(left), len(right)		
+        merged = []		
+        while left_index < left_len and right_index < right_len:		
+            if left[left_index] <= right[right_index]:		
+                merged.append(left[left_index])		
+                left_index += 1		
+            else:		
+                merged.append(right[right_index])		
+                right_index += 1		
+        if left_index == left_len:		
+            merged.extend(right[right_index:])		
+        else:		
+            merged.extend(left[left_index:])		
+        return merged		
+    if len(collection) <= 1:		
+        return collection		
+    mid = len(collection) // 2		
+    return merge(merge_sort(collection[:mid]), merge_sort(collection[mid:]))",0		
+self_constructed,Human,"def partition(items, begin, end):		
+    pivot = items[begin]		
+    i = begin + 1		
+    for j in range(begin + 1, end):		
+        if items[j] < pivot:		
+            items[i], items[j] = items[j], items[i]		
+            i += 1		
+    items[begin], items[i - 1] = items[i - 1], items[begin]		
+    return i - 1		
+def quick_sort(items, begin=0, end=None):		
+    if end is None: end = len(items)		
+    if begin >= end: return items		
+    p = partition(items, begin, end)		
+    quick_sort(items, begin, p)		
+    quick_sort(items, p + 1, end)		
+    return items",0		
+self_constructed,Human,"from collections import deque		
+def breadth_first_search(graph, start, goal=None):		
+    visited = set()		
+    queue = deque([[start]])		
+    while queue:		
+        path = queue.popleft()		
+        vertex = path[-1]		
+        if vertex not in visited:		
+            if goal is not None and vertex == goal: return path		
+            visited.add(vertex)		
+            for current_neighbour in graph.get(vertex, []):		
+                new_path = path + [current_neighbour]		
+                queue.append(new_path)		
+    return None",0		
+self_constructed,Human,"class Node:		
+    def __init__(self, data):		
+        self.data, self.left, self.right = data, None, None		
+class BinarySearchTree:		
+    def __init__(self): self.root = None		
+    def insert(self, data):		
+        if not self.root: self.root = Node(data)		
+        else: self._insert_recursive(self.root, data)		
+    def _insert_recursive(self, node, data):		
+        if data < node.data:		
+            if node.left: self._insert_recursive(node.left, data)		
+            else: node.left = Node(data)		
+        else:		
+            if node.right: self._insert_recursive(node.right, data)		
+            else: node.right = Node(data)",0		
+self_constructed,Human,"import heapq		
+def dijkstra(graph, start):		
+    distances = {node: float('inf') for node in graph}		
+    distances[start] = 0		
+    pq = [(0, start)]		
+    while pq:		
+        curr_dist, curr_node = heapq.heappop(pq)		
+        if curr_dist > distances[curr_node]: continue		
+        for neighbor, weight in graph[curr_node].items():		
+            distance = curr_dist + weight		
+            if distance < distances[neighbor]:		
+                distances[neighbor] = distance		
+                heapq.heappush(pq, (distance, neighbor))		
+    return distances",0		
+self_constructed,Human,"def heapify(unsorted, index, heap_size):		
+    largest = index		
+    left_index = 2 * index + 1		
+    right_index = 2 * index + 2		
+    if left_index < heap_size and unsorted[left_index] > unsorted[largest]:		
+        largest = left_index		
+    if right_index < heap_size and unsorted[right_index] > unsorted[largest]:		
+        largest = right_index		
+    if largest != index:		
+        unsorted[largest], unsorted[index] = unsorted[index], unsorted[largest]		
+        heapify(unsorted, largest, heap_size)		
+def heap_sort(unsorted):		
+    n = len(unsorted)		
+    for i in range(n // 2 - 1, -1, -1):		
+        heapify(unsorted, i, n)		
+    for i in range(n - 1, 0, -1):		
+        unsorted[0], unsorted[i] = unsorted[i], unsorted[0]		
+        heapify(unsorted, 0, i)		
+    return unsorted",0		
+self_constructed,Human,"def bubble_sort(arr):		
+    n = len(arr)		
+    for i in range(n):		
+        for j in range(0, n-i-1):		
+            if arr[j] > arr[j+1]:		
+                arr[j], arr[j+1] = arr[j+1], arr[j]		
+    return arr",0		
+self_constructed,Human,"def selection_sort(collection):		
+    length = len(collection)		
+    for i in range(length - 1):		
+        least = i		
+        for k in range(i + 1, length):		
+            if collection[k] < collection[least]:		
+                least = k		
+        collection[least], collection[i] = collection[i], collection[least]		
+    return collection",0		
+self_constructed,Human,"def insertion_sort(arr):		
+    for i in range(1, len(arr)):		
+        key = arr[i]		
+        j = i - 1		
+        while j >= 0 and key < arr[j]:		
+            arr[j + 1] = arr[j]		
+            j -= 1		
+        arr[j + 1] = key		
+    return arr",0		
+self_constructed,Human,"def depth_first_search(graph, start, visited=None):		
+    if visited is None:		
+        visited = set()		
+    visited.add(start)		
+    for next in graph[start] - visited:		
+        depth_first_search(graph, next, visited)		
+    return visited",0		
+self_constructed,Human,"def topological_sort(graph):		
+    visited = set()		
+    stack = []		
+    def dfs(u):		
+        visited.add(u)		
+        if u in graph:		
+            for v in graph[u]:		
+                if v not in visited: dfs(v)		
+        stack.insert(0, u)		
+    for u in graph:		
+        if u not in visited: dfs(u)		
+    return stack",0		
+self_constructed,Human,"parent = dict()		
+rank = dict()		
+def make_set(vertice):		
+    parent[vertice] = vertice		
+    rank[vertice] = 0		
+def find(vertice):		
+    if parent[vertice] != vertice:		
+        parent[vertice] = find(parent[vertice])		
+    return parent[vertice]		
+def union(v1, v2):		
+    root1 = find(v1)		
+    root2 = find(v2)		
+    if root1 != root2:		
+        if rank[root1] > rank[root2]: parent[root2] = root1		
+        else:		
+            parent[root1] = root2		
+            if rank[root1] == rank[root2]: rank[root2] += 1",0		
+self_constructed,Human,"import heapq		
+def prim(graph, start):		
+    mst = []		
+    visited = set([start])		
+    edges = [(cost, start, to) for to, cost in graph[start].items()]		
+    heapq.heapify(edges)		
+    while edges:		
+        cost, frm, to = heapq.heappop(edges)		
+        if to not in visited:		
+            visited.add(to)		
+            mst.append((frm, to, cost))		
+            for to_next, cost2 in graph[to].items():		
+                if to_next not in visited: heapq.heappush(edges, (cost2, to, to_next))		
+    return mst",0		
+self_constructed,Human,"def count_components(n, edges):		
+    parent = list(range(n))		
+    def find(i):		
+        if parent[i] == i: return i		
+        parent[i] = find(parent[i])		
+        return parent[i]		
+    for i, j in edges:		
+        root_i, root_j = find(i), find(j)		
+        if root_i != root_j:		
+            parent[root_i] = root_j		
+            n -= 1		
+    return n",0		
+self_constructed,Human,"class Node:		
+    def __init__(self, data):		
+        self.data, self.left, self.right, self.height = data, None, None, 1		
+class AVLTree:		
+    def get_height(self, node): return node.height if node else 0		
+    def get_balance(self, node): return self.get_height(node.left) - self.get_height(node.right) if node else 0		
+    def rotate_right(self, y):		
+        x = y.left	 T2 = x.right	
+        x.right = y	 y.left = T2	
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))		
+        x.height = 1 + max(self.get_height(x.left), self.get_height(x.right))		
+        return x",0		
+self_constructed,Human,"class BinaryHeap:		
+    def __init__(self): self.heap_list = [0]	 self.current_size = 0	
+    def perc_up(self, i):		
+        while i // 2 > 0:		
+            if self.heap_list[i] < self.heap_list[i // 2]:		
+                self.heap_list[i // 2], self.heap_list[i] = self.heap_list[i], self.heap_list[i // 2]		
+            i = i // 2		
+    def insert(self, k):		
+        self.heap_list.append(k)	 self.current_size += 1	 self.perc_up(self.current_size)",0
+self_constructed,Human,"class TrieNode:		
+    def __init__(self): self.nodes = {}	 self.is_leaf = False	
+class Trie:		
+    def __init__(self): self.root = TrieNode()		
+    def insert(self, word):		
+        curr = self.root		
+        for char in word:		
+            if char not in curr.nodes: curr.nodes[char] = TrieNode()		
+            curr = curr.nodes[char]		
+        curr.is_leaf = True		
+    def search(self, word):		
+        curr = self.root		
+        for char in word:		
+            if char not in curr.nodes: return False		
+            curr = curr.nodes[char]		
+        return curr.is_leaf",0		
+self_constructed,Human,"class SegmentTree:		
+    def __init__(self, arr):		
+        self.n = len(arr)	 self.tree = [0] * (2 * self.n)	
+        for i in range(self.n): self.tree[self.n + i] = arr[i]		
+        for i in range(self.n - 1, 0, -1): self.tree[i] = self.tree[2 * i] + self.tree[2 * i + 1]		
+    def update(self, i, val):		
+        i += self.n	 self.tree[i] = val	
+        while i > 1:		
+            self.tree[i // 2] = self.tree[i] + self.tree[i ^ 1]		
+            i //= 2",0		
+self_constructed,Human,"class UnionFind:		
+    def __init__(self, n): self.ids = list(range(n))	 self.cnt = n	
+    def find(self, p):		
+        while p != self.ids[p]:		
+            self.ids[p] = self.ids[self.ids[p]]	 p = self.ids[p]	
+        return p		
+    def union(self, p, q):		
+        i, j = self.find(p), self.find(q)		
+        if i == j: return		
+        self.ids[i] = j	 self.cnt -= 1",0	
+self_constructed,Human,"class HashTable:		
+    def __init__(self, size=10):		
+        self.size = size	 self.slots = [None] * self.size	 self.data = [None] * self.size
+    def put(self, key, data):		
+        hash_val = self.hash_function(key, self.size)		
+        if self.slots[hash_val] == None:		
+            self.slots[hash_val] = key	 self.data[hash_val] = data	
+        else:		
+            if self.slots[hash_val] == key: self.data[hash_val] = data		
+            else: # rehash logic skipped for brevity		
+                pass",0		
+self_constructed,Human,"def bellman_ford(graph, start):		
+    dist = {node: float('inf') for node in graph}		
+    dist[start] = 0		
+    for _ in range(len(graph) - 1):		
+        for u in graph:		
+            for v, weight in graph[u].items():		
+                if dist[u] + weight < dist[v]:		
+                    dist[v] = dist[u] + weight		
+    return dist",0		
+self_constructed,Human,"def floyd_warshall(graph):		
+    dist = graph		
+    nodes = range(len(graph))		
+    for k in nodes:		
+        for i in nodes:		
+            for j in nodes:		
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])		
+    return dist",0		
+self_constructed,Human,"def binary_search(arr, target):		
+    low, high = 0, len(arr) - 1		
+    while low <= high:		
+        mid = (low + high) // 2		
+        if arr[mid] == target: return mid		
+        elif arr[mid] < target: low = mid + 1		
+        else: high = mid - 1		
+    return -1",0		
+self_constructed,Human,"def linear_search(arr, target):		
+    for i in range(len(arr)):		
+        if arr[i] == target:		
+            return i		
+    return -1",0		
+self_constructed,Human,"def fibonacci(n):		
+    if n <= 0: return []		
+    if n == 1: return [0]		
+    sequence = [0, 1]		
+    while len(sequence) < n:		
+        next_value = sequence[-1] + sequence[-2]		
+        sequence.append(next_value)		
+    return sequence",0		
+self_constructed,Human,"def gcd(a, b):		
+    while b:		
+        a, b = b, a % b		
+    return abs(a)",0		
+self_constructed,Human,"def sieve(n):		
+    primes = [True for i in range(n+1)]		
+    p = 2		
+    while (p * p <= n):		
+        if (primes[p] == True):		
+            for i in range(p * p, n+1, p):		
+                primes[i] = False		
+        p += 1		
+    return [p for p in range(2, n+1) if primes[p]]",0		
+self_constructed,Human,"def max_subarray(numbers):		
+    best_sum = float('-inf')		
+    current_sum = 0		
+    for x in numbers:		
+        current_sum = max(x, current_sum + x)		
+        best_sum = max(best_sum, current_sum)		
+    return best_sum",0		
+self_constructed,Human,"def counting_sort(collection):		
+    if not collection: return []		
+    max_val = max(collection)		
+    min_val = min(collection)		
+    count = [0] * (max_val - min_val + 1)		
+    for num in collection:		
+        count[num - min_val] += 1		
+    result = []		
+    for i, c in enumerate(count):		
+        result.extend([i + min_val] * c)		
+    return result",0		
+self_constructed,Human,"def radix_sort(lst):		
+    RADIX = 10		
+    placement = 1		
+    max_digit = max(lst)		
+    while placement < max_digit:		
+        buckets = [list() for _ in range(RADIX)]		
+        for i in lst:		
+            tmp = int((i / placement) % RADIX)		
+            buckets[tmp].append(i)		
+        a = 0		
+        for b in range(RADIX):		
+            buck = buckets[b]		
+            for i in buck:		
+                lst[a] = i		
+                a += 1		
+        placement *= RADIX		
+    return lst",0		
+self_constructed,Human,"def factorial(n):		
+    if n < 0:		
+        raise ValueError(""Factorial is not defined for negative numbers"")		
+    if n == 0 or n == 1:		
+        return 1		
+    return n * factorial(n - 1)",0		
+self_constructed,Human,"def binary_exponentiation(base, power):		
+    result = 1		
+    while power > 0:		
+        if power % 2 == 1:		
+            result *= base		
+        base *= base		
+        power //= 2		
+    return result",0		
+self_constructed,Human,"def is_palindrome(s):		
+    s = s.replace("" "", """").lower()		
+    left, right = 0, len(s) - 1		
+    while left < right:		
+        if s[left] != s[right]:		
+            return False		
+        left += 1		
+        right -= 1		
+    return True",0		
+self_constructed,Human,"def transpose(matrix):		
+    rows = len(matrix)		
+    cols = len(matrix[0])		
+    transposed = [[0 for _ in range(rows)] for _ in range(cols)]		
+    for i in range(rows):		
+        for j in range(cols):		
+            transposed[j][i] = matrix[i][j]		
+    return transposed",0		
+self_constructed,Human,"def kmp_search(pattern, text):		
+    m, n = len(pattern), len(text)		
+    lps = [0] * m		
+    j, i = 0, 1		
+    while i < m:		
+        if pattern[i] == pattern[j]:		
+            j += 1		
+            lps[i] = j		
+            i += 1		
+        elif j != 0: j = lps[j-1]		
+        else: lps[i] = 0	 i += 1	
+    res = []	 i, j = 0, 0	
+    while i < n:		
+        if pattern[j] == text[i]: i += 1	 j += 1	
+        if j == m: res.append(i-j)	 j = lps[j-1]	
+        elif i < n and pattern[j] != text[i]:		
+            if j != 0: j = lps[j-1]		
+            else: i += 1		
+    return res",0		
+self_constructed,Human,"def rabin_karp(pattern, text, q=101):		
+    d = 256		
+    m, n = len(pattern), len(text)		
+    p, t, h = 0, 0, 1		
+    for i in range(m-1): h = (h*d) % q		
+    for i in range(m):		
+        p = (d*p + ord(pattern[i])) % q		
+        t = (d*t + ord(text[i])) % q		
+    for i in range(n-m+1):		
+        if p == t:		
+            for j in range(m):		
+                if text[i+j] != pattern[j]: break		
+            else: return i		
+        if i < n-m:		
+            t = (d*(t - ord(text[i])*h) + ord(text[i+m])) % q		
+            if t < 0: t = t + q		
+    return -1",0		
+self_constructed,Human,"def levenshtein_distance(s1, s2):		
+    if len(s1) < len(s2):		
+        return levenshtein_distance(s2, s1)		
+    if len(s2) == 0:		
+        return len(s1)		
+    previous_row = range(len(s2) + 1)		
+    for i, c1 in enumerate(s1):		
+        current_row = [i + 1]		
+        for j, c2 in enumerate(s2):		
+            insertions = previous_row[j + 1] + 1		
+            deletions = current_row[j] + 1		
+            substitutions = previous_row[j] + (c1 != c2)		
+            current_row.append(min(insertions, deletions, substitutions))		
+        previous_row = current_row		
+    return previous_row[-1]",0		
+self_constructed,Human,"def knapsack(capacity, weights, values, n):		
+    dp = [[0 for _ in range(capacity + 1)] for _ in range(n + 1)]		
+    for i in range(n + 1):		
+        for w in range(capacity + 1):		
+            if i == 0 or w == 0:		
+                dp[i][w] = 0		
+            elif weights[i-1] <= w:		
+                dp[i][w] = max(values[i-1] + dp[i-1][w-weights[i-1]], dp[i-1][w])		
+            else:		
+                dp[i][w] = dp[i-1][w]		
+    return dp[n][capacity]",0		
+self_constructed,Human,"def lcs(X, Y):		
+    m, n = len(X), len(Y)		
+    L = [[0] * (n + 1) for _ in range(m + 1)]		
+    for i in range(1, m + 1):		
+        for j in range(1, n + 1):		
+            if X[i-1] == Y[j-1]:		
+                L[i][j] = L[i-1][j-1] + 1		
+            else:		
+                L[i][j] = max(L[i-1][j], L[i][j-1])		
+    return L[m][n]",0		
+self_constructed,Human,"def lis(arr):		
+    n = len(arr)		
+    lis_arr = [1] * n		
+    for i in range(1, n):		
+        for j in range(0, i):		
+            if arr[i] > arr[j] and lis_arr[i] < lis_arr[j] + 1:		
+                lis_arr[i] = lis_arr[j] + 1		
+    maximum = 0		
+    for i in range(n):		
+        maximum = max(maximum, lis_arr[i])		
+    return maximum",0		
+self_constructed,Human,"def is_bipartite(graph):		
+    color = {}		
+    for node in graph:		
+        if node not in color:		
+            queue = [node]		
+            color[node] = 0		
+            while queue:		
+                curr = queue.pop(0)		
+                for neighbor in graph[curr]:		
+                    if neighbor not in color:		
+                        color[neighbor] = 1 - color[curr]		
+                        queue.append(neighbor)		
+                    elif color[neighbor] == color[curr]:		
+                        return False		
+    return True",0		
+self_constructed,Human,"def eulerian_path(graph):		
+    in_degree = {u: 0 for u in graph}		
+    out_degree = {u: len(v) for u, v in graph.items()}		
+    for u in graph:		
+        for v in graph[u]:		
+            in_degree[v] = in_degree.get(v, 0) + 1		
+    start_node = next(iter(graph))		
+    for u in graph:		
+        if out_degree[u] - in_degree[u] == 1:		
+            start_node = u		
+            break		
+    path = []		
+    def dfs(u):		
+        while graph[u]:		
+            v = graph[u].pop()		
+            dfs(v)		
+        path.append(u)		
+    dfs(start_node)		
+    return path[::-1]",0		
+self_constructed,Human,"def two_sum(nums, target):		
+    dic = {}		
+    for i, num in enumerate(nums):		
+        if num in dic:		
+            return [dic[num], i]		
+        else:		
+            dic[target - num] = i		
+    return None",0		
+self_constructed,Human,"def solve_n_queens(n):		
+    def is_safe(board, row, col):		
+        for i in range(row):		
+            if board[i] == col or                board[i] - i == col - row or                board[i] + i == col + row:		
+                return False		
+        return True		
+    def solve(board, row):		
+        if row == n:		
+            result.append(board[:])		
+            return		
+        for col in range(n):		
+            if is_safe(board, row, col):		
+                board[row] = col		
+                solve(board, row + 1)		
+                board[row] = -1		
+    result = []		
+    solve([-1] * n, 0)		
+    return result",0		
+self_constructed,Human,"def is_safe(graph, color, v, c):		
+    for i in range(len(graph)):		
+        if graph[v][i] == 1 and color[i] == c:		
+            return False		
+    return True		
+def graph_coloring(graph, m, color, v):		
+    if v == len(graph): return True		
+    for c in range(1, m + 1):		
+        if is_safe(graph, color, v, c):		
+            color[v] = c		
+            if graph_coloring(graph, m, color, v + 1):		
+                return True		
+            color[v] = 0		
+    return False",0		
+self_constructed,Human,"from collections import OrderedDict		
+class LRUCache:		
+    def __init__(self, capacity):		
+        self.cache = OrderedDict()		
+        self.capacity = capacity		
+    def get(self, key):		
+        if key not in self.cache: return -1		
+        self.cache.move_to_end(key)		
+        return self.cache[key]		
+    def put(self, key, value):		
+        self.cache[key] = value		
+        self.cache.move_to_end(key)		
+        if len(self.cache) > self.capacity:		
+            self.cache.popitem(last=False)",0		
+self_constructed,Human,"def is_valid_sudoku(board):		
+    seen = set()		
+    for i in range(9):		
+        for j in range(9):		
+            num = board[i][j]		
+            if num != '.':		
+                row_str = f""{num} in row {i}""		
+                col_str = f""{num} in col {j}""		
+                box_str = f""{num} in box {i//3}-{j//3}""		
+                if row_str in seen or col_str in seen or box_str in seen:		
+                    return False		
+                seen.add(row_str)		
+                seen.add(col_str)		
+                seen.add(box_str)		
+    return True",0		
+self_constructed,Human,"def prefix_sum(arr):		
+    n = len(arr)		
+    prefix = [0] * n		
+    prefix[0] = arr[0]		
+    for i in range(1, n):		
+        prefix[i] = prefix[i-1] + arr[i]		
+    return prefix",0		
+self_constructed,Human,"from collections import deque		
+def max_sliding_window(nums, k):		
+    q = deque()		
+    res = []		
+    for i, cur in enumerate(nums):		
+        while q and nums[q[-1]] <= cur:		
+            q.pop()		
+        q.append(i)		
+        if q[0] == i - k:		
+            q.popleft()		
+        if i >= k - 1:		
+            res.append(nums[q[0]])		
+    return res",0		
+self_constructed,Human,"class Node:		
+    def __init__(self, data):		
+        self.data = data		
+        self.next = None		
+def reverse_linked_list(head):		
+    prev = None		
+    curr = head		
+    while curr:		
+        next_temp = curr.next		
+        curr.next = prev		
+        prev = curr		
+        curr = next_temp		
+    return prev",0		
+self_constructed,GPT-4o,"def binary_search(arr: list, target: int) -> int:		
+    """"""		
+    Perform binary search on a sorted array.		
+    Returns the index of the target if found, otherwise -1.		
+    """"""		
+    left, right = 0, len(arr) - 1
