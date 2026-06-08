@@ -36,20 +36,7 @@ def quick_sort(items, begin=0, end=None):
     quick_sort(items, begin, p)		
     quick_sort(items, p + 1, end)		
     return items",0		
-self_constructed,Human,"from collections import deque		
-def breadth_first_search(graph, start, goal=None):		
-    visited = set()		
-    queue = deque([[start]])		
-    while queue:		
-        path = queue.popleft()		
-        vertex = path[-1]		
-        if vertex not in visited:		
-            if goal is not None and vertex == goal: return path		
-            visited.add(vertex)		
-            for current_neighbour in graph.get(vertex, []):		
-                new_path = path + [current_neighbour]		
-                queue.append(new_path)		
-    return None",0		
+self_constructed,Human,"from collections import deque\ndef breadth_first_search(graph, start, goal=None):\n    visited = set()\n    queue = deque([[start]])\n    while queue:\n        path = queue.popleft()\n        vertex = path[-1]\n        if vertex not in visited:\n            if goal is not None and vertex == goal: return path\n            visited.add(vertex)\n            for current_neighbour in graph.get(vertex, []):\n                new_path = path + [current_neighbour]\n                queue.append(new_path)\n    return None",0		
 self_constructed,Human,"class Node:		
     def __init__(self, data):		
         self.data, self.left, self.right = data, None, None		
@@ -594,4 +581,4 @@ self_constructed,GPT-4o,"def binary_search(arr: list, target: int) -> int:
     Perform binary search on a sorted array.		
     Returns the index of the target if found, otherwise -1.		
     """"""		
-    left, right = 0, len(arr) - 1
+    left, right = 0, len(arr) - 1		
